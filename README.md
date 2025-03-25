@@ -124,32 +124,27 @@ npm run start
 The frontend will be accessible at http://localhost:5173.
 
 ## Application Looks
-### Dashboard(german in dark-mode)
-![image](https://github.com/user-attachments/assets/03529b12-4644-4030-85b7-86c1c8afb13b)
-
-### Dashboard(english in light-mode)
-![image](https://github.com/user-attachments/assets/30a131e7-1361-4039-8fb2-14237c4835c2)
+### Dashboard
+![image](https://github.com/user-attachments/assets/ace39494-7a5f-4ee0-a782-5d03faf14146)
 
 ### Buying
-![image](https://github.com/user-attachments/assets/c9b00081-3fd4-46ea-a78c-3273120edd63)
+![image](https://github.com/user-attachments/assets/6e305f27-159b-4690-b4f1-9bdebde45a47)
 
 ### IT-Purchases
-![image](https://github.com/user-attachments/assets/1aa3835b-fc9a-4670-9fb0-7109a8e9eb7a)
+![image](https://github.com/user-attachments/assets/f5acd252-9e82-4f93-9a8f-95bf9ebae0a8)
 
 ### Printers
-![image](https://github.com/user-attachments/assets/b6d4b1c3-712a-42a0-9fe6-baed549d6ddc)
+![image](https://github.com/user-attachments/assets/db0f2f3b-783e-4f90-a2da-1216e2ea598e)
 
 ### File Management
-![image](https://github.com/user-attachments/assets/e9c4cb69-6b7b-4931-a024-f0ed1e8f0d3d)
+![image](https://github.com/user-attachments/assets/caa66076-805f-475a-8502-4ec2cc562399)
 
 ### Logs
-![image](https://github.com/user-attachments/assets/1d0e796b-b7bb-41c6-94f9-cd61c7269fc4)
+![image](https://github.com/user-attachments/assets/fb66cffc-d917-496a-af05-f14d6a98bf02)
 
 ### User and Groupmanagemnt
-![image](https://github.com/user-attachments/assets/6eb55273-082a-4395-81f3-946d50ba84cb)
-![image](https://github.com/user-attachments/assets/2af9f5ec-9b4f-45c6-a05a-3bcc915c7ee2)
-
-
+![image](https://github.com/user-attachments/assets/88bcbbc3-5b83-42d9-8804-fef2be213acf)
+![image](https://github.com/user-attachments/assets/b5a00498-377f-4b7b-b873-f850b6d6ba94)
 
 ## Application Features
 ### 1. **Dashboard**
