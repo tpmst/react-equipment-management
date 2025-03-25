@@ -129,7 +129,7 @@ const Login: React.FC = () => {
         )}
 
         {/* Forgot Password Input Field and Form */}
-        {showForgotPassword && (
+        {!showForgotPassword && (
           <form onSubmit={handleForgotPassword}>
             <div className="mb-4">
               <label className="block mb-2">Enter your email</label>
