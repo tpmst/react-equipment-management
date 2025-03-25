@@ -1,0 +1,13 @@
+{
+  "admin": [
+    "dashboard",
+    "pdf",
+    "xlsx",
+    "tabelle",
+    "drucker",
+    "einkauf",
+    "telefon",
+    "settings",
+    "it"
+  ]
+}

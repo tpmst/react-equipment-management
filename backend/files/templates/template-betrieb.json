@@ -1,0 +1,17 @@
+{
+    "basePdf": "BLANK_PDF",
+    "schemas": [
+      {
+        "produkt": { "type": "text", "position": { "x": 50, "y": 50 }, "width": 200, "height": 20 },
+        "accessorie": { "type": "text", "position": { "x": 50, "y": 80 }, "width": 200, "height": 20 },
+        "notes": { "type": "text", "position": { "x": 50, "y": 110 }, "width": 200, "height": 20 },
+        "Notebook": { "type": "text", "position": { "x": 50, "y": 140 }, "width": 200, "height": 20 },
+        "Tablet": { "type": "text", "position": { "x": 50, "y": 170 }, "width": 200, "height": 20 },
+        "Mobile": { "type": "text", "position": { "x": 50, "y": 200 }, "width": 200, "height": 20 },
+        "Storage": { "type": "text", "position": { "x": 50, "y": 230 }, "width": 200, "height": 20 },
+        "Else": { "type": "text", "position": { "x": 50, "y": 260 }, "width": 200, "height": 20 },
+        "additionalNotes": { "type": "text", "position": { "x": 50, "y": 290 }, "width": 200, "height": 20 },
+        "name": { "type": "text", "position": { "x": 50, "y": 320 }, "width": 200, "height": 20 }
+      }
+    ]
+  }

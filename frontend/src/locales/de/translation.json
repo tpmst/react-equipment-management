@@ -1,0 +1,191 @@
+{
+  "dashboard": {
+    "totalSpending": "Gesamtausgaben",
+    "totalSpendingUser": "Gesamtausgaben für Benutzergeräte",
+    "totalSpendingIT": "Gesamtausgaben für IT-Infrastruktur",
+    "thisYearSpending": "Ausgaben dieses Jahr",
+    "thisYearSpendingIT": "Ausgaben für IT-Infrastruktur dieses Jahr",
+    "thisMonthSpending": "Ausgaben diesen Monat",
+    "hardwareThisYear": "Herausgegebene Hardware dieses Jahr",
+    "hardwareThisYearIT": "Anzahl der bestellten Geräte für IT-Infrastruktur",
+    "comparedToLastYear": "im Vergleich zum letzten Jahr",
+    "comparedToLastMonth": "im Vergleich zum letzten Monat",
+    "counterLevels": "Zählerstände",
+    "tonerLevels": "Tonerstände",
+    "averageSpending": "Durchschnittliche Kosten des Gerätes",
+    "mostOrderedProductS": "Am meisten bestellte Software",
+    "mostOrderedProductH": "Am meisten bestellte Hardware",
+    "conditionAnalysis": "Zustandsanalyse",
+    "TotalSupscriptionsUser": "Monatliche Kosten für Abos",
+    "monthlySupscriptionIT": "Monatliche Kosten für gemietete/geleaste IT-Geräte"
+  },
+  "error": {
+    "noToken": "Kein Token gefunden, bitte loggen Sie sich ein.",
+    "fetchCSV": "Fehler beim Abrufen der CSV-Datei:",
+    "general": "Fehler"
+  },
+  "status": {
+    "loading": "Laden",
+    "printerOffline": "Der ausgewählte Drucker ist offline"
+  },
+  "charts": {
+    "totalHardwareSoftware": "Gesamtausgaben für Hardware/Software",
+    "monthlySpending": "Monatliche Ausgaben",
+    "departmentTotalSpending": "Gesamtausgaben nach Abteilung",
+    "departmentHardwareGivenOut": "Bestellte Hardware für Abteilungen",
+    "top20UsersWithMostHardware": "Top 20 Benutzer mit den meisten ausgegebenen Geräten"
+  },
+  "tonerLevels": {
+    "black": "Schwarz",
+    "cyan": "Cyan",
+    "magenta": "Magenta",
+    "yellow": "Gelb"
+  },
+  "labels": {
+    "selectYear": "Jahr auswählen",
+    "selectPrinter": "Drucker auswählen"
+  },
+  "categories": {
+    "hardware": "Hardware",
+    "software": "Software"
+  },
+  "months": {
+    "january": "Januar",
+    "february": "Februar",
+    "march": "März",
+    "april": "April",
+    "may": "Mai",
+    "june": "Juni",
+    "july": "Juli",
+    "august": "August",
+    "september": "September",
+    "october": "Oktober",
+    "november": "November",
+    "december": "Dezember"
+  },
+  "totals": "Gesamtkosten für ",
+  "table": {
+    "name": "Name",
+    "ipAddress": "IP-Adresse",
+    "printsBlackWhite": "Schwarz-Weiß-Drucke",
+    "printsColor": "Farbdrucke",
+    "status": "Status"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "general": "Allgemein",
+    "hardware": "Standard Hardware",
+    "user": "Benutzerverwaltung",
+    "group": "Gruppenverwaltung",
+    "files":"Dateiverwaltung"
+  },
+  "standardHardware": {
+    "addItemPlaceholder": "Neues Standard-Element hinzufügen",
+    "links": "Links",
+    "linkText": "Titel",
+    "linkUrl": "URL",
+    "saveSettings": "Einstellungen speichern"
+  },
+  "users": {
+    "management": "Benutzerverwaltung",
+    "username": "Benutzername",
+    "password": "Passwort",
+    "newPassword": "Neues Passwort",
+    "group": "Benutzergruppe",
+    "addUser": "Benutzer hinzufügen",
+    "editUser": "Benutzer bearbeiten",
+    "deleteUser": "Benutzer löschen",
+    "confirmDelete": "Möchten Sie diesen Benutzer wirklich löschen?"
+  },
+  "groups": {
+    "management": "Gruppenverwaltung",
+    "groupName": "Gruppenname",
+    "permissions": "Berechtigungen",
+    "addGroup": "Gruppe hinzufügen",
+    "editGroup": "Gruppe bearbeiten",
+    "deleteGroup": "Gruppe löschen",
+    "confirmDelete": "Möchten Sie diese Gruppe wirklich löschen?"
+  },
+  "buttons": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "download": "Herunterladen",
+    "download1": "Nicht unterschrieben Datei herunterladen",
+    "download2": "Unterschriebe Datei herunterladen",
+    "upload": "Datei hochladen"
+  },
+  "filesettings": {
+    "header1": "Eine Zeile aus der ausgewählten CSV löschen",
+    "header2": "Eine Datei löschen die versehentlich hochgelanden wurde"
+  },
+  "logheader": "Suche in den Logs",
+  
+  "csvheader": {
+    "status": "Status",
+    "id": "ID",
+    "billnum": "Rechnungsnummer",
+    "orderlink": "Bestelllink",
+    "amount": "Menge",
+    "unitprice": "Einzelpreis",
+    "type": "Hard/Software",
+    "productname": "Produktbezeichnung",
+    "condition": "Zustand",
+    "orderdate": "Bestelldatum",
+    "orderedby": "Bestellt von",
+    "department": "Abteilung",
+    "orderedfor": "Bestellt für",
+    "investmentrequest": "Investantrag",
+    "invoicefile": "Rechnungsdatei",
+    "purchaseoption": "Kaufoption",
+    "cancellation": "Kündigung",
+    "requestdate": "Antragsdatum",
+    "recipient": "Empfänger",
+    "orderedbyIT": "Bestellt von (IT)",
+    "serialnumber": "S/N",
+    "operatingresource": "Betriebsmittel",
+    "accessories": "Zubehör",
+    "specialfeatures": "Besonderheiten/Mängel",
+    "signed": "Unterschrieben",
+    "path": "Dateiname"
+  },
+    "orderoption":{
+      "buy":"Kaufen",
+      "lease":"pro Monat",
+      "lease2": "pro Jahr",
+      "cancel": "Gekündigt",
+      "at": "am"
+    },
+    "satusfields":{
+      "toorder": "zu Bestellen",
+      "ordered": "Bestellt",
+      "delivered": "Geliefert",
+      "deployed": "Aufgebaut",
+      "cancel": "Abgebrochen"
+    },
+    "modal": {
+    "editData": "Daten bearbeiten"
+  },
+  "form": {
+    "placeholders": {
+      "selectDate": "Datum auswählen"
+    },
+    "select": {
+      "orderedbyIT": "Bestellt von (IT) auswählen",
+      "department": "Abteilung auswählen",
+      "operatingresource": "Betriebsmittel auswählen"
+    },
+    "yes": "Ja",
+    "no": "Nein"
+  },
+  "csvheader_small": {
+    "id": "ID",
+    "issuedate": "Ausgabedatum",
+    "device": "Gerät",
+    "serialnumber": "SN",
+    "recipient": "Empfänger",
+    "issuedby": "Herausgegeben von",
+    "returndate": "Rückgabedatum",
+    "receivedby": "Entgegengenommen von"
+  }
+
+}
