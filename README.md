@@ -125,7 +125,9 @@ The frontend will be accessible at http://localhost:5173.
 
 ## Application Looks
 ### Dashboard
-![image](https://github.com/user-attachments/assets/ace39494-7a5f-4ee0-a782-5d03faf14146)
+![image](https://github.com/user-attachments/assets/14004aca-f7eb-4b4e-80b5-8336c6d0ca73)
+![image](https://github.com/user-attachments/assets/c6daec6c-16f9-4b3a-a213-6fd880d8cfd6)
+![image](https://github.com/user-attachments/assets/214efd1d-ad9a-4f02-84c9-93919a99eb5f)
 
 ### Buying
 ![image](https://github.com/user-attachments/assets/6e305f27-159b-4690-b4f1-9bdebde45a47)
