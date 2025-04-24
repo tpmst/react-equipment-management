@@ -1,11 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, {
+  useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import axios from "axios";
 import EditModal from "./EditModal"; // Import the EditModal component for editing rows
 import { API_BASE_URL } from "../../security/config"; // Base URL for API requests
 import { t } from "i18next";
 
 // CSVViewer component for displaying and editing CSV data
-const CSVViewer: React.FC = () => {
+const CSVViewer = forwardRef((_, ref) => {
   // State to store CSV data, error messages, authentication token, search term, modal visibility, and devices
   const [data, setData] = useState<string[][]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -14,7 +19,38 @@ const CSVViewer: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedRow, setSelectedRow] = useState<number | null>(null);
   const [selectableDevices, setSelectableDevices] = useState<string[]>([]);
+  const [newRowData, setNewRowData] = useState<string[] | null>(null);
+
   // State to hold all unique devices
+  useImperativeHandle(ref, () => {
+    return {
+      addRow: async (sourceRow: string[]) => {
+        try {
+          const currentIds = data.slice(1).map((row) => parseInt(row[0])); // IDs aus der ersten Spalte extrahieren
+          const nextId =
+            currentIds.length > 0 ? Math.max(...currentIds) + 1 : 1; // Nächste ID berechnen
+
+          const newRow = Array(11).fill("");
+          newRow[0] = nextId.toString(); // id
+          newRow[2] = sourceRow[10]; // department
+          newRow[3] = sourceRow[11]; // recipient (orderedfor)
+          newRow[4] = sourceRow[9]; // orderedbyIT
+          newRow[5] = sourceRow[6]; // productname
+          newRow[6] = sourceRow[1]; // serialnumber
+          newRow[7] = sourceRow[5]; // operatingresource (type)
+
+          setNewRowData(newRow); // store the data to pass directly to modal
+          setIsModalOpen(true); // open modal
+        } catch (error: any) {
+          setError(
+            `Error preparing new row: ${
+              error.response?.data?.message || error.message
+            }`
+          );
+        }
+      },
+    };
+  });
 
   // Effect hook to fetch authentication token and CSV data on component mount
   useEffect(() => {
@@ -104,15 +140,16 @@ const CSVViewer: React.FC = () => {
 
   // Handle saving the updated row data
   const handleSave = async (updatedData: string[]) => {
-    if (selectedRow) {
-      const updatedRows = [...data];
-      updatedRows[selectedRow] = updatedData; // Aktualisiere die ausgewählte Zeile
-      console.log(selectedRow);
-      try {
+    try {
+      if (newRowData) {
+        // This is a NEW row (added via `addRow`)
+        const updatedRows = [...data, updatedData];
+        setData(updatedRows);
+
         await axios.post(
           `${API_BASE_URL}/update-csv/01_it-beschaffung.csv`,
           {
-            rowIndex: selectedRow, // Sende den tatsächlichen Index der Zeile
+            rowIndex: data.length, // Add new
             updatedData,
           },
           {
@@ -121,14 +158,37 @@ const CSVViewer: React.FC = () => {
             },
           }
         );
-        await fetchCSVFile(); // Aktualisierte Daten erneut laden
-      } catch (error: any) {
-        setError(
-          `Error updating CSV file: ${
-            error.response?.data?.message || error.message
-          }`
+      } else if (selectedRow !== null) {
+        // This is an EXISTING row
+        const updatedRows = [...data];
+        updatedRows[selectedRow] = updatedData;
+        setData(updatedRows);
+
+        await axios.post(
+          `${API_BASE_URL}/update-csv/01_it-beschaffung.csv`,
+          {
+            rowIndex: selectedRow,
+            updatedData,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
         );
       }
+
+      // In both cases
+      await fetchCSVFile();
+      setIsModalOpen(false);
+      setNewRowData(null);
+      setSelectedRow(null);
+    } catch (error: any) {
+      setError(
+        `Error saving CSV file: ${
+          error.response?.data?.message || error.message
+        }`
+      );
     }
   };
 
@@ -226,18 +286,20 @@ const CSVViewer: React.FC = () => {
         isOpen={isModalOpen}
         onClose={() => {
           setIsModalOpen(false);
-          fetchCSVFile(); // CSV-Daten erneut laden
+          setNewRowData(null); // clear it
+          fetchCSVFile();
         }}
         data={
-          selectedRow !== null && data[selectedRow]
+          newRowData ??
+          (selectedRow !== null && data[selectedRow]
             ? data[selectedRow]
-            : Array(data[0]?.length).fill("")
-        } // Sicherstellen, dass ein leeres Array übergeben wird
+            : Array(data[0]?.length).fill(""))
+        }
         onSave={handleSave}
         allDevices={selectableDevices}
       />
     </div>
   );
-};
+});
 
 export default CSVViewer;

@@ -27,10 +27,10 @@ const Login: React.FC = () => {
         password,
       });
 
-      const { token, group } = response.data; // Extract the token from the response
+      const { accessToken, refreshToken } = response.data; // Extract the token from the response
 
       // Call the login function from the context to store the token
-      login(token, group);
+      login(accessToken, refreshToken);
 
       // Navigate to the home page after successful login
       navigate("/home");
@@ -129,7 +129,7 @@ const Login: React.FC = () => {
         )}
 
         {/* Forgot Password Input Field and Form */}
-        {!showForgotPassword && (
+        {showForgotPassword && (
           <form onSubmit={handleForgotPassword}>
             <div className="mb-4">
               <label className="block mb-2">Enter your email</label>

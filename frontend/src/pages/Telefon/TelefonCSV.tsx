@@ -193,7 +193,7 @@ const TelefonCSV: React.FC = () => {
           value={searchTerm}
           onChange={handleSearchChange}
           placeholder="Search..."
-          className="px-4 py-2 text-gray-200 border w-full bg-white shadow dark:bg-[#1e293b]"
+          className="px-4 py-2 text-gray-200 border rounded w-full bg-white shadow rounded dark:bg-[#1e293b]"
         />
         <button
           onClick={handleAddEntry}
@@ -228,7 +228,7 @@ const TelefonCSV: React.FC = () => {
                 {row.map((cell, cellIndex) => (
                   <td
                     key={cellIndex}
-                    className={`px-4 py-2 border bg-[#e9e7d8] hover:bg-[#d1cfc1] text-black  dark:hover:bg-gray-700 dark:text-gray-100 $"bg-yellow-300`}
+                    className={`px-4 py-2 border bg-[#e9e7d8] hover:bg-[#d1cfc1] text-black dark:bg-gray-600 dark:hover:bg-gray-700 dark:text-gray-100 $"bg-yellow-300 dark:bg-yellow-800`}
                   >
                     {cell}
                   </td>

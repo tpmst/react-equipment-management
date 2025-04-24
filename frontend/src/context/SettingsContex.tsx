@@ -22,6 +22,7 @@ interface Settings {
   categories?: string[];
   conditions?: string[];
   standardHardware?: { item: string; links: Link[] }[];
+  itCategories?: string[]; // New property for IT categories
 }
 
 // Default settings fallback in case the backend call fails
@@ -31,7 +32,8 @@ const defaultSettings: Settings = {
   departments: [],
   categories: [],
   conditions: [],
-  standardHardware: [], // Now includes the standardHardware with item and links
+  standardHardware: [],
+  itCategories: [], // Default value for IT categories
 };
 
 // Create the context

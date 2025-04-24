@@ -186,6 +186,10 @@ const EditModal: React.FC<EditModalProps> = ({
     }
   };
 
+  const isValidDate = (dateString: string) => {
+    return !isNaN(Date.parse(dateString));
+  };
+
   if (!isOpen) return null;
 
   const translatedFields = {
@@ -220,7 +224,9 @@ const EditModal: React.FC<EditModalProps> = ({
         return (
           <DatePicker
             selected={
-              formData[index] ? new Date(formData[index] + "T00:00:00Z") : null
+              formData[index] && isValidDate(formData[index])
+                ? new Date(formData[index] + "T00:00:00Z")
+                : null
             }
             onChange={(date) => handleDateChange(index, date)}
             className="w-full p-2 border border-gray-300 rounded"

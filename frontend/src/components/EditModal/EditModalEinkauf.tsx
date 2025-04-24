@@ -1,9 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { EditModalProps } from "../../utils/EditModal/types";
 import InputFieldRenderer from "./InputFiledRenderer";
 import { t } from "i18next";
+import { useSettings } from "../../context/SettingsContex";
 
-const EditModalEinkauf: React.FC<EditModalProps> = ({
+export interface EditModalEinkaufProps {
+  isOpen: boolean;
+  onClose: () => void;
+  data: string[];
+  onSave: (data: string[]) => void;
+  csvData: string[][];
+  selctableUsernames: string[];
+  selectableDevices: string[];
+  setSite: React.Dispatch<React.SetStateAction<string>>;
+  addToXLSX?: (entry: string[]) => void;
+}
+
+const EditModalEinkauf: React.FC<EditModalEinkaufProps> = ({
   isOpen,
   onClose,
   data,
@@ -11,8 +23,12 @@ const EditModalEinkauf: React.FC<EditModalProps> = ({
   csvData,
   selctableUsernames,
   selectableDevices,
+  setSite,
+  addToXLSX,
 }) => {
   const [formData, setFormData] = useState<string[]>([]);
+
+  const { settings } = useSettings();
 
   useEffect(() => {
     setFormData(data);
@@ -27,7 +43,7 @@ const EditModalEinkauf: React.FC<EditModalProps> = ({
 
   const fields = [
     "id",
-    "billnum",
+    "serialnumber",
     "orderlink",
     "amount",
     "purchaseoption",
@@ -80,6 +96,20 @@ const EditModalEinkauf: React.FC<EditModalProps> = ({
         </div>
 
         <div className="flex justify-end space-x-4">
+          {settings.betriebsmittel?.includes(formData[5]) && (
+            <button
+              onClick={() => {
+                setSite("xlsx");
+                setTimeout(() => {
+                  addToXLSX?.(formData);
+                }, 50); // give time to mount
+              }}
+              className="px-4 py-2 bg-gray-500 text-white rounded"
+            >
+              {t("buttons.specialType")}
+            </button>
+          )}
+
           <button
             onClick={handleSubmit}
             className="px-4 py-2 bg-blue-500 text-white rounded"

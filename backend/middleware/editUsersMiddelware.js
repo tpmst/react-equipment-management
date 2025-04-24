@@ -1,16 +1,17 @@
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
-const jwt = require("jsonwebtoken");
 const { authenticateToken } = require("../middleware/authMiddleware");
-const { group } = require("console");
-const {logAction, logError, logDetection} = require('../functions/logFunction')
+const {logAction, logError, logDetection} = require('../functions/logFunction');
+const {checkValid} = require('../functions/checkValid');
+const bcrypt = require("bcryptjs");
 
 const router = express.Router();
 const SECRET_KEY = process.env.JWT_SECRET || "fallback_secret";
 
 // Path to user database (JSON file)
 const USERS_FILE = path.join(__dirname, "./logins/logindata.json");
+
 
 // Helper function to read users from JSON file
 const getUsers = () => {
@@ -34,7 +35,7 @@ const saveUsers = (users) => {
 
 // POST: Add a new user (Admin only)
 router.post("/users/add", authenticateToken, (req, res) => {
-  if (req.user.group !== "admin") {
+  if (!checkValid(req)) {
     logDetection(req, "addUser", req.params.username);
     return res.status(403).json({ message: "Access denied" });
   }
@@ -49,7 +50,8 @@ router.post("/users/add", authenticateToken, (req, res) => {
     return res.status(400).json({ message: "User already exists" });
   }
 
-  users.push({ username, password, group, email });
+  const hashedPassword = bcrypt.hashSync(password, 10); // Hash the password with a salt round of 10
+  users.push({ username, password: hashedPassword, group, email });
   logAction(req, "addUser", username);
 
   saveUsers(users);
@@ -58,7 +60,7 @@ router.post("/users/add", authenticateToken, (req, res) => {
 
 // PUT: Edit a user (Admin only)
 router.put("/users/edit/:username", authenticateToken, (req, res) => {
-  if (req.user.group !== "admin") {
+  if (!checkValid(req)) {
     logDetection(req, "editUser", req.params.username);
     return res.status(403).json({ message: "Access denied" });
   }
@@ -73,11 +75,14 @@ router.put("/users/edit/:username", authenticateToken, (req, res) => {
   }
 
   if (newUsername) users[userIndex].username = newUsername;
-  if (newPassword) users[userIndex].password = newPassword;
+  if (newPassword) {
+    const hashedPassword = bcrypt.hashSync(newPassword, 10); // Hash the new password
+    users[userIndex].password = hashedPassword;
+  }
   if (newGroup) users[userIndex].group = newGroup;
   if (newEmail) users[userIndex].email = newEmail;
 
-  logAction(req, "changeUser", `${username} | ${newGroup} | ${newEmail}`);
+  logAction(req, "editUser", `${username} updated their details`);
 
   saveUsers(users);
   res.json({ message: "User updated successfully" });
@@ -85,18 +90,19 @@ router.put("/users/edit/:username", authenticateToken, (req, res) => {
 
 // GET: Fetch all users (Admin only)
 router.get("/users", authenticateToken, (req, res) => {
-  if (req.user.group !== "admin") {
+  if (!checkValid(req)) {
+    logDetection(req, "viewUsers", req.params.username);
     return res.status(403).json({ message: "Access denied" });
   }
 
   const users = getUsers();
-  res.json(users.map(({ password, ...rest }) => rest)); // Hide passwords in response
+  res.json(users.map(({ password, ...rest }) => rest)); // Exclude passwords from the response
 });
 
 // DELETE: Remove a user (Admin only)
 router.delete("/users/delete/:username", authenticateToken, (req, res) => {
-  if (req.user.group !== "admin") {
-    logDetection(req, "deleteUser", req.params.username)
+  if(!checkValid(req.body)){
+    logDetection(req, "addUser", req.params.username);
     return res.status(403).json({ message: "Access denied" });
   }
 
@@ -115,7 +121,7 @@ router.delete("/users/delete/:username", authenticateToken, (req, res) => {
 
 // PUT: Change password for the authenticated user
 router.put("/users/change-password", authenticateToken, (req, res) => {
-  const { username } = req.user; // Der authentifizierte Benutzer
+  const username = getUsername(req); // The authenticated user
   const { currentPassword, newPassword } = req.body;
 
   if (!currentPassword || !newPassword) {
@@ -131,16 +137,17 @@ router.put("/users/change-password", authenticateToken, (req, res) => {
 
   const user = users[userIndex];
 
-  // Überprüfen, ob das aktuelle Passwort korrekt ist
-  if (user.password !== currentPassword) {
+  // Verify if the current password is correct
+  if (!bcrypt.compareSync(currentPassword, user.password)) {
     logDetection(req, "changePassword", username);
     return res.status(403).json({ message: "Current password is incorrect" });
   }
 
-  // Neues Passwort setzen
-  users[userIndex].password = newPassword;
+  // Hash the new password
+  const hashedNewPassword = bcrypt.hashSync(newPassword, 10);
+  users[userIndex].password = hashedNewPassword;
 
-  logAction(req, "changePassword", currentPassword + " | " + newPassword);
+  logAction(req, "changePassword", `${username} changed their password`);
 
   saveUsers(users);
   res.json({ message: "Password changed successfully" });

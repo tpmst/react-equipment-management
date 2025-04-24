@@ -8,6 +8,7 @@
     "thisMonthSpending": "Ausgaben diesen Monat",
     "hardwareThisYear": "Herausgegebene Hardware dieses Jahr",
     "hardwareThisYearIT": "Anzahl der bestellten Geräte für IT-Infrastruktur",
+    "software": "Anzahl der bestellten Software für IT-Infrastruktur",
     "comparedToLastYear": "im Vergleich zum letzten Jahr",
     "comparedToLastMonth": "im Vergleich zum letzten Monat",
     "counterLevels": "Zählerstände",
@@ -17,7 +18,15 @@
     "mostOrderedProductH": "Am meisten bestellte Hardware",
     "conditionAnalysis": "Zustandsanalyse",
     "TotalSupscriptionsUser": "Monatliche Kosten für Abos",
-    "monthlySupscriptionIT": "Monatliche Kosten für gemietete/geleaste IT-Geräte"
+    "monthlySupscriptionIT": "Monatliche Kosten für gemietete/geleaste IT-Geräte",
+    "averageSubscriptionCost":"Durchschnittleiche Abokosten",
+    "averageSubscriptionDuration":"Durchschnittliche Abolaufzeit",
+    "totalDevices":"Gesamtanzahl an Geräten",
+    "totalSoftware":"Gesamtanzahl an gekaufter Software",
+    "activeSubscriptions":"Aktive und inaktive Abos",
+    "spendingByCategory":"Ausgaben nach Kategorie",
+    "spendingByCategoryIT": "Ausgaben für IT-Infrastruktur nach Kategorie",
+    "softwarePurchases":"Softwarekäufe"
   },
   "error": {
     "noToken": "Kein Token gefunden, bitte loggen Sie sich ein.",
@@ -112,7 +121,8 @@
     "download": "Herunterladen",
     "download1": "Nicht unterschrieben Datei herunterladen",
     "download2": "Unterschriebe Datei herunterladen",
-    "upload": "Datei hochladen"
+    "upload": "Datei hochladen",
+    "specialType": "Betriebmittelübergabe erstellen"
   },
   "filesettings": {
     "header1": "Eine Zeile aus der ausgewählten CSV löschen",
@@ -141,7 +151,7 @@
     "requestdate": "Antragsdatum",
     "recipient": "Empfänger",
     "orderedbyIT": "Bestellt von (IT)",
-    "serialnumber": "S/N",
+    "serialnumber": "Seriennummer",
     "operatingresource": "Betriebsmittel",
     "accessories": "Zubehör",
     "specialfeatures": "Besonderheiten/Mängel",
@@ -186,6 +196,6 @@
     "issuedby": "Herausgegeben von",
     "returndate": "Rückgabedatum",
     "receivedby": "Entgegengenommen von"
-  }
-
+  },
+  "days":" Tage"
 }

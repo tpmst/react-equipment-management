@@ -35,7 +35,7 @@ export const calculateMonthlySpending = (
         const price = parseFloat(row[priceIndex]?.replace(",", ".").trim());
         const amount = parseFloat(row[amountIndex]);
         const option = parseInt(row[optionIndex], 10);
-        const endDate = parseDate(row[cancelIndex]) || null; // If invalid, set as null
+        const cancelDate = parseDate(row[cancelIndex]) || null; // If invalid, set as null
 
         if (!requestDate || isNaN(price) || isNaN(amount)) {
           console.warn(
@@ -44,43 +44,73 @@ export const calculateMonthlySpending = (
           return;
         }
 
-        const rentalEndDate = endDate ? endDate : currentDate; // Assume ongoing rental if no end date
         const startYear = requestDate.getFullYear();
         const startMonth = requestDate.getMonth(); // 0-based
 
-        if (option === 2) {
-          // Monthly rental cost
-          for (
-            let year = startYear, month = startMonth;
-            year <= rentalEndDate.getFullYear() &&
-            month <= rentalEndDate.getMonth();
-            month++
-          ) {
-            if (month === 12) {
-              month = 0;
-              year++;
+        if (startYear <= currentYear) {
+          if (option === 2) {
+            // Monthly subscription
+            for (
+              let year = startYear, month = startMonth;
+              year <= currentYear;
+              month++
+            ) {
+              if (month === 12) {
+                month = 0;
+                year++;
+              }
+              if (year === currentYear) {
+                if (
+                  cancelDate &&
+                  (cancelDate.getFullYear() < currentYear ||
+                    (cancelDate.getFullYear() === currentYear &&
+                      cancelDate.getMonth() < month))
+                ) {
+                  break;
+                }
+                monthlySpending[month] += price * amount;
+              }
+              if (year === previousYear) {
+                if (
+                  cancelDate &&
+                  (cancelDate.getFullYear() < previousYear ||
+                    (cancelDate.getFullYear() === previousYear &&
+                      cancelDate.getMonth() < month))
+                ) {
+                  break;
+                }
+                previousYearMonthlySpending[month] += price * amount;
+              }
             }
-            if (year === currentYear) monthlySpending[month] += price * amount;
-            if (year === previousYear)
-              previousYearMonthlySpending[month] += price * amount;
-          }
-        } else if (option === 3) {
-          // Yearly rental cost
-          for (
-            let year = startYear;
-            year <= rentalEndDate.getFullYear();
-            year++
-          ) {
-            if (year === currentYear)
+          } else if (option === 3) {
+            // Yearly subscription
+            for (
+              let year = startYear;
+              year <= currentYear;
+              year++
+            ) {
+              if (
+                (!cancelDate || cancelDate.getFullYear() >= year) &&
+                year === currentYear
+              ) {
+                monthlySpending[startMonth] += price * amount;
+              }
+              if (
+                (!cancelDate || cancelDate.getFullYear() >= year) &&
+                year === previousYear
+              ) {
+                previousYearMonthlySpending[startMonth] += price * amount;
+              }
+            }
+          } else {
+            // One-time purchase
+            if (startYear === currentYear) {
               monthlySpending[startMonth] += price * amount;
-            if (year === previousYear)
+            }
+            if (startYear === previousYear) {
               previousYearMonthlySpending[startMonth] += price * amount;
+            }
           }
-        } else {
-          if (startYear === currentYear)
-            monthlySpending[startMonth] += price * amount;
-          if (startYear === previousYear)
-            previousYearMonthlySpending[startMonth] += price * amount;
         }
       } catch (error) {
         console.error(`Error processing row ${rowIndex + 1}:`, error);
@@ -93,7 +123,7 @@ export const calculateMonthlySpending = (
   // - Price in column 4
   // - Amount in column 3
   // - Rental option in column 15
-  // - Cancelation date in column 16)
+  // - Cancellation date in column 16
   processData(data, 8, 4, 3, 15, 16);
 
   const currentMonthSpending = monthlySpending[currentMonth];

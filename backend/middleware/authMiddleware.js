@@ -1,13 +1,19 @@
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
-const createCsvWriter = require('csv-writer').createObjectCsvWriter;
-const { Client } = require('ldapts');
 const { logLogin, logError } = require('../functions/logFunction');
 require("dotenv").config();
 const nodemailer = require("nodemailer");
+const bcrypt = require('bcrypt');
 
-const SECRET_KEY = process.env.JWT_SECRET
+const SECRET_KEY = process.env.JWT_SECRET;
+const REFRESH_SECRET_KEY = process.env.JWT_REFRESH_SECRET; // Separate secret for refresh tokens
+const JWT_EXPIRATION = process.env.JWT_EXPIRATION || "1h"; // Default expiration time for JWT
+const REFRESH_TOKEN_EXPIRATION = process.env.REFRESH_TOKEN_EXPIRATION || "7d"; // Refresh token expiration
+const BACKEND_URL = process.env.BACKEND_URL;
+
+// In-memory store for refresh tokens (use a database in production)
+const refreshTokens = new Map();
 
 const authenticateToken = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
@@ -40,28 +46,106 @@ function getUsers() {
     return JSON.parse(data); // Parse and return the data
 }
 
-async function login(req, res){
-    
+// Function to generate tokens
+const generateTokens = (user) => {
+  const accessToken = jwt.sign(
+    { username: user.username, group: user.group },
+    SECRET_KEY,
+    { expiresIn: JWT_EXPIRATION }
+  );
 
-    try {
-        const { username, password } = req.body;
-        
-        const users = getUsers(); // Fetch users from JSON file
-        const user = users.find(u => u.username === username && password === u.password);
-        const group = user.group;
-        
-        if (!user) {
-          return res.status(401).json({ message: 'Invalid username or password' });
-        }        
-        const token = jwt.sign({ username: user.username, group: user.group }, SECRET_KEY, {
-          expiresIn: "10h",
-        });
-        logLogin(user.username, group)
-        res.json({ token, group });
-        
-      } catch (error) {
-        res.status(500).json({ message: 'An error occurred during login', error: error.message });
-      }
+  const refreshToken = jwt.sign(
+    { username: user.username },
+    REFRESH_SECRET_KEY,
+    { expiresIn: REFRESH_TOKEN_EXPIRATION }
+  );
+
+  // Store the refresh token in memory (or database)
+  refreshTokens.set(refreshToken, user.username);
+
+  return { accessToken, refreshToken };
+};
+
+// Login function with token generation
+async function login(req, res) {
+  try {
+    const { username, password } = req.body;
+
+    const users = getUsers(); // Fetch users from JSON file
+    const user = users.find((u) => u.username === username);
+
+    if (!user) {
+      return res.status(401).json({ message: "Invalid username or password" });
+    }
+
+    // Compare the provided password with the hashed password
+    const isPasswordValid = bcrypt.compareSync(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Invalid username or password" });
+    }
+
+    // Generate access and refresh tokens
+    const { accessToken, refreshToken } = generateTokens(user);
+
+    logLogin(user.username, user.group);
+    res.json({ accessToken, refreshToken, group: user.group, username: user.username });
+  } catch (error) {
+    console.error("Login Error:", error);
+    res.status(500).json({ message: "An error occurred during login", error: error.message });
+  }
+}
+
+// Token renewal endpoint
+async function renewToken(req, res) {
+  const { refreshToken } = req.body;
+
+  if (!refreshToken) {
+    return res.status(400).json({ message: "Refresh token is required" });
+  }
+
+  try {
+    // Verify the refresh token
+    const decoded = jwt.verify(refreshToken, REFRESH_SECRET_KEY);
+
+    // Check if the refresh token exists in the store
+    if (!refreshTokens.has(refreshToken)) {
+      return res.status(403).json({ message: "Invalid refresh token" });
+    }
+
+    // Get the username from the refresh token
+    const username = refreshTokens.get(refreshToken);
+
+    // Fetch the user from the database or file
+    const users = getUsers();
+    const user = users.find((u) => u.username === username);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Generate a new access token
+    const accessToken = jwt.sign(
+      { username: user.username, group: user.group },
+      SECRET_KEY,
+      { expiresIn: JWT_EXPIRATION }
+    );
+
+    res.json({ accessToken });
+  } catch (error) {
+    console.error("Token Renewal Error:", error);
+    res.status(403).json({ message: "Invalid or expired refresh token" });
+  }
+}
+
+// Logout function to invalidate refresh tokens
+function logout(req, res) {
+  const { refreshToken } = req.body;
+
+  if (refreshToken) {
+    refreshTokens.delete(refreshToken); // Remove the refresh token from the store
+  }
+
+  res.json({ message: "Logged out successfully" });
 }
 
 // POST: Forgot Password - Send Reset Email
@@ -81,11 +165,11 @@ async function forgotPassword(req, res) {
 
   // Generate a temporary reset token (e.g., JWT or random string)
   const resetToken = jwt.sign({ username: user.username }, SECRET_KEY, {
-    expiresIn: "1h", // Token valid for 1 hour
+    expiresIn: "2h", // Token valid for 1 hour
   });
 
   // Create a reset link (adjust the URL to match your frontend)
-  const resetLink = `${process.env.FRONTEND_URL}//reset-password?token=${resetToken}`;
+  const resetLink = `${BACKEND_URL}//reset-password?token=${resetToken}`;
 
   // Configure the email transporter
   const transporter = nodemailer.createTransport({
@@ -142,8 +226,9 @@ async function resetPassword(req, res) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Update the user's password
-    users[userIndex].password = newPassword;
+    // Hash the new password
+    const hashedPassword = bcrypt.hashSync(newPassword, 10); // Salt rounds = 10
+    users[userIndex].password = hashedPassword;
 
     logLogin(decoded.username, "Password reset successfully");
 
@@ -155,5 +240,5 @@ async function resetPassword(req, res) {
   }
 }
 
-module.exports = { authenticateToken, login, forgotPassword, resetPassword };
+module.exports = { authenticateToken, login, forgotPassword, resetPassword, renewToken, logout };
 

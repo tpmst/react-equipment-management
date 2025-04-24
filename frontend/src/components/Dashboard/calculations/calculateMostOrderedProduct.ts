@@ -1,27 +1,35 @@
-export const calculateMostOrderedProduct = (
+export const calculateMostOrderedProductComparison = (
   data: string[][],
-  category: "Hardware" | "Software",
-  setMostOrderedProduct: (value: string) => void
+  setMostOrderedSoftware: (value: string) => void,
+  setMostOrderedOther: (value: string) => void
 ) => {
-  const productCounts: { [key: string]: number } = {};
+  const productCountsSoftware: { [key: string]: number } = {};
+  const productCountsOther: { [key: string]: number } = {};
 
-  // Count occurrences of each product within the specified category
+  // Count occurrences of each product for Software and Other categories
   data.slice(1).forEach((row) => {
     const productCategory = row[5]?.trim(); // Category in column 5
     const productName = row[6]?.trim(); // Product name in column 6
 
-    if (productCategory === category && productName) {
-      productCounts[productName] = (productCounts[productName] || 0) + 1;
+    if (productName) {
+      if (productCategory === "Software") {
+        productCountsSoftware[productName] =
+          (productCountsSoftware[productName] || 0) + 1;
+      } else {
+        productCountsOther[productName] =
+          (productCountsOther[productName] || 0) + 1;
+      }
     }
   });
 
-  // Find the most ordered product
-  const mostOrdered = Object.entries(productCounts).reduce(
-    (max, entry) => (entry[1] > max[1] ? entry : max),
-    ["", 0]
-  );
-
-  const originalName = mostOrdered[0];
+  // Helper function to find the most ordered product
+  const findMostOrdered = (productCounts: { [key: string]: number }) => {
+    const mostOrdered = Object.entries(productCounts).reduce(
+      (max, entry) => (entry[1] > max[1] ? entry : max),
+      ["", 0]
+    );
+    return mostOrdered[0]; // Return the product name
+  };
 
   // Helper function to truncate name while keeping word boundaries
   const truncateName = (name: string, maxLength: number): string => {
@@ -34,18 +42,13 @@ export const calculateMostOrderedProduct = (
       : name.slice(0, maxLength);
   };
 
-  const truncatedName = truncateName(originalName, 40);
+  // Find and truncate the most ordered product for Software
+  const mostOrderedSoftware = findMostOrdered(productCountsSoftware);
+  const truncatedSoftware = truncateName(mostOrderedSoftware, 40);
+  setMostOrderedSoftware(truncatedSoftware);
 
-  setMostOrderedProduct(truncatedName);
+  // Find and truncate the most ordered product for Other categories
+  const mostOrderedOther = findMostOrdered(productCountsOther);
+  const truncatedOther = truncateName(mostOrderedOther, 40);
+  setMostOrderedOther(truncatedOther);
 };
-
-// Wrapper functions for Hardware and Software
-export const calculateMostOrderedProductHardware = (
-  data: string[][],
-  setMostOrderedProduct: (value: string) => void
-) => calculateMostOrderedProduct(data, "Hardware", setMostOrderedProduct);
-
-export const calculateMostOrderedProductSoftware = (
-  data: string[][],
-  setMostOrderedProduct: (value: string) => void
-) => calculateMostOrderedProduct(data, "Software", setMostOrderedProduct);

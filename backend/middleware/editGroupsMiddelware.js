@@ -4,12 +4,18 @@ const path = require("path");
 const jwt = require("jsonwebtoken");
 const { authenticateToken } = require("../middleware/authMiddleware");
 const {logAction, logError, logDetection} = require('../functions/logFunction')
+const { checkValid } = require('../functions/checkValid')
+
+
 
 const router = express.Router();
 const SECRET_KEY = process.env.JWT_SECRET || "fallback_secret";
 
 // Path to groups database (JSON file)
 const GROUPS_FILE = path.join(__dirname, "./logins/routes.json");
+
+// Path to user database (JSON file)
+const USERS_FILE = path.join(__dirname, "./logins/logindata.json");
 
 // Helper function to read groups from JSON file
 const getGroups = () => {
@@ -33,9 +39,11 @@ const saveGroups = (groups) => {
 
 // GET: Fetch all groups (Admin only)
 router.get("/groups", authenticateToken, (req, res) => {
-  if (req.user.group !== "admin") {
-    return res.status(403).json({ message: "Access denied" });
-  }
+  if(!checkValid(req)){
+      logDetection(req, "addUser", req.params.username);
+      return res.status(403).json({ message: "Access denied" });
+    }
+  
   
   const groups = getGroups();
   res.json(groups);
@@ -43,10 +51,11 @@ router.get("/groups", authenticateToken, (req, res) => {
 
 // POST: Add a new group (Admin only)
 router.post("/groups/add", authenticateToken, (req, res) => {
-  if (req.user.group !== "admin") {
-    logDetection(req, "addGroup", req.group)
-    return res.status(403).json({ message: "Access denied" });
-  }
+  if(!checkValid(req)){
+      logDetection(req, "addUser", req.params.username);
+      return res.status(403).json({ message: "Access denied" });
+    }
+  
 
   const { groupName, permissions } = req.body;
   if (!groupName || !Array.isArray(permissions)) {
@@ -67,10 +76,11 @@ router.post("/groups/add", authenticateToken, (req, res) => {
 
 // PUT: Edit a group (Admin only)
 router.put("/groups/edit/:groupName", authenticateToken, (req, res) => {
-  if (req.user.group !== "admin") {
-    logDetection(req, "editGroup", req.group)
-    return res.status(403).json({ message: "Access denied" });
-  }
+  if(!checkValid(req)){
+      logDetection(req, "addUser", req.params.username);
+      return res.status(403).json({ message: "Access denied" });
+    }
+  
 
   const { groupName } = req.params;
   const { newGroupName, newPermissions } = req.body;
@@ -95,10 +105,11 @@ router.put("/groups/edit/:groupName", authenticateToken, (req, res) => {
 
 // DELETE: Remove a group (Admin only)
 router.delete("/groups/delete/:groupName", authenticateToken, (req, res) => {
-  if (req.user.group !== "admin") {
-    logDetection(req, "deleteGroup", req.group)
-    return res.status(403).json({ message: "Access denied" });
-  }
+  if(!checkValid(req)){
+      logDetection(req, "addUser", req.params.username);
+      return res.status(403).json({ message: "Access denied" });
+    }
+  
 
   const { groupName } = req.params;
   const groups = getGroups();

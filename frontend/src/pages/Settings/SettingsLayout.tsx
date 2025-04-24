@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Tabs, Tab, Box } from "@mui/material";
 import SelectSettings from "./SelectSettings";
-import StandardHardware from "./StandardHardware";
 import { useTranslation } from "react-i18next"; // Import the useTranslation hook
 import UserManagement from "../../components/Settings/UserManagement";
 import GroupManagement from "../../components/Settings/GroupManagement";
@@ -28,7 +27,6 @@ const SettingsLayout = () => {
           variant="fullWidth"
         >
           <Tab label={t("settings.general")} />
-          <Tab label={t("settings.hardware")} />
           <Tab label={t("settings.user")} />
           <Tab label={t("settings.group")} />
           <Tab label={t("settings.files")} />
@@ -39,10 +37,9 @@ const SettingsLayout = () => {
       {/* Render components based on selected tab */}
       <Box sx={{ mt: 2 }}>
         {selectedTab === 0 && <SelectSettings />}
-        {selectedTab === 1 && <StandardHardware />}
-        {selectedTab === 2 && <UserManagement />}
-        {selectedTab === 3 && <GroupManagement />}
-        {selectedTab === 4 && (
+        {selectedTab === 1 && <UserManagement />}
+        {selectedTab === 2 && <GroupManagement />}
+        {selectedTab === 3 && (
           <>
             <div className="space-y-8">
               <CSVManagement />
@@ -50,7 +47,7 @@ const SettingsLayout = () => {
             </div>
           </>
         )}
-        {selectedTab === 5 && <LogViewer />}
+        {selectedTab === 4 && <LogViewer />}
       </Box>
     </div>
   );

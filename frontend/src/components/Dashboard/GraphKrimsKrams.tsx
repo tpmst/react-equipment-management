@@ -91,6 +91,7 @@ const GraphKrimsKrams = () => {
 
   const { theme } = useTheme();
   const axisColor = theme === "light" ? "#000000" : "#ffffff";
+  const color = "#024C5A";
 
   if (error) {
     return (
@@ -102,7 +103,7 @@ const GraphKrimsKrams = () => {
 
   return (
     <div className="overflow-auto">
-      <div className="w-full p-6">
+      <div className="w-full">
         <NormalCard title={t("charts.top20UsersWithMostHardware")}>
           <div>
             <BarChart
@@ -118,6 +119,7 @@ const GraphKrimsKrams = () => {
                 {
                   id: "totalSpending",
                   data: topUserTotals,
+                  color: color,
                 },
               ]}
               width={width}

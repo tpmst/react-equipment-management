@@ -14,7 +14,15 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy"; // Import copy ic
 import { useTheme } from "../../context/themeContext";
 import { t } from "i18next";
 
-const CSVViewEinkauf: React.FC = () => {
+interface CSVViewEinkaufProps {
+  setSite: React.Dispatch<React.SetStateAction<string>>;
+  addToXLSX: (row: string[]) => void;
+}
+
+const CSVViewEinkauf: React.FC<CSVViewEinkaufProps> = ({
+  setSite,
+  addToXLSX,
+}) => {
   const [data, setData] = useState<string[][]>([]);
   const [newString, setNewEntry] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -202,6 +210,7 @@ const CSVViewEinkauf: React.FC = () => {
               },
             }
           );
+          await fetchCSVFile(); // CSV-Daten erneut laden
         } catch (error: any) {
           setError(
             `Error updating CSV file: ${
@@ -279,6 +288,10 @@ const CSVViewEinkauf: React.FC = () => {
       default:
         return <LocalShipping style={{ fontSize: "40px", color: textColor }} />;
     }
+  };
+
+  const handleAddToXLSX = (entry: string[]) => {
+    addToXLSX(entry);
   };
 
   let sortedData = [...data.slice(1)];
@@ -396,6 +409,8 @@ const CSVViewEinkauf: React.FC = () => {
       </div>
 
       <EditModalEinkauf
+        setSite={setSite}
+        addToXLSX={handleAddToXLSX}
         isOpen={isModalOpen}
         onClose={() => {
           setIsModalOpen(false);
@@ -413,6 +428,8 @@ const CSVViewEinkauf: React.FC = () => {
       />
 
       <EditModalEinkauf
+        setSite={setSite}
+        addToXLSX={handleAddToXLSX}
         isOpen={isModalOpenNew}
         onClose={() => {
           setIsModalOpenNew(false);

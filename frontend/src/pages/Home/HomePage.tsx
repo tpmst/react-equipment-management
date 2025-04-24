@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CSVViewer from "../ExcelView/CSVView";
 import ListPDF from "../pdf/ListPdf";
 import Dashboard from "../Dashboard/Dashboard";
@@ -8,22 +8,22 @@ import DruckerDashboard from "../druckerDashboard/DruckerDashboard";
 import CSVViewEinkauf from "../Einkauf/CSVViewEinkauf";
 import SettingsLayout from "../Settings/SettingsLayout";
 import { SettingsProvider } from "../../context/SettingsContex";
+import ThemeSelector from "../../context/themeSelector";
 import { useTranslation } from "react-i18next";
 import TelefonCSV from "../Telefon/TelefonCSV";
 import CSV_ITS from "../IT-Supplies/it-supplies";
 import { useAuth } from "../../context/AuthenticationContext";
 import axios from "axios";
 import { API_BASE_URL, COMPANY_NAME } from "../../security/config";
-
 import LogoutIcon from "@mui/icons-material/Logout";
 
 const HomePage: React.FC = () => {
   const [site, setSite] = useState("dashboard");
   const { i18n } = useTranslation();
-  const { logout, authToken, userGroup } = useAuth(); // Get user group from AuthContext
-  const currentYear = new Date().getFullYear(); // Get current year
+  const { logout, authToken, userGroup } = useAuth();
+  const currentYear = new Date().getFullYear();
+  const xlsxRef = useRef<{ addRow: (row: string[]) => void } | null>(null);
 
-  // Change language
   const changeLanguage = (language: string) => {
     i18n.changeLanguage(language);
     localStorage.setItem("i18nextLng", language);
@@ -31,10 +31,9 @@ const HomePage: React.FC = () => {
 
   const [allowedRoutes, setAllowedRoutes] = useState<string[]>([]);
 
-  // 🚀 Fetch permissions from backend
   useEffect(() => {
     const fetchPermissions = async () => {
-      if (!authToken || !userGroup) return; // ✅ Ensure userGroup exists
+      if (!authToken || !userGroup) return;
 
       try {
         const response = await axios.get(`${API_BASE_URL}/permissions`, {
@@ -57,7 +56,8 @@ const HomePage: React.FC = () => {
         </div>
 
         <div className="ml-auto flex items-center space-x-4">
-          {/* Language Buttons */}
+          <ThemeSelector />
+
           <button
             onClick={() => changeLanguage("en")}
             className={`p-2 ${
@@ -79,10 +79,8 @@ const HomePage: React.FC = () => {
             de
           </button>
 
-          {/* Separator */}
           <span className="text-gray-500 dark:text-gray-400">|</span>
 
-          {/* Logout Button with Icon */}
           <button
             onClick={logout}
             className="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700 transition"
@@ -98,10 +96,15 @@ const HomePage: React.FC = () => {
             <>
               {site === "dashboard" && <Dashboard />}
               {site === "pdf" && <ListPDF />}
-              {site === "xlsx" && <CSVViewer />}
+              {site === "xlsx" && <CSVViewer ref={xlsxRef} />}
               {site === "tabelle" && <CSVViewKlein />}
               {site === "drucker" && <DruckerDashboard />}
-              {site === "einkauf" && <CSVViewEinkauf />}
+              {site === "einkauf" && (
+                <CSVViewEinkauf
+                  setSite={setSite}
+                  addToXLSX={(row) => xlsxRef.current?.addRow(row)}
+                />
+              )}
               {site === "telefon" && <TelefonCSV />}
               {site === "settings" && <SettingsLayout />}
               {site === "it" && <CSV_ITS />}
@@ -114,7 +117,6 @@ const HomePage: React.FC = () => {
         </main>
       </SettingsProvider>
 
-      {/* Footer with Dynamic Year */}
       <footer className="bg-[#eceadb] dark:bg-[#1e293b] w-full p-4 dark:text-white text-center">
         © 2024 - {currentYear} {COMPANY_NAME}. All rights reserved.
       </footer>

@@ -232,7 +232,7 @@ const InputFieldRenderer: React.FC<Props> = ({
           className="w-full p-2 border border-gray-300 rounded"
         >
           {!formData[index] && <option value=""></option>}
-          {settings.categories?.map((cat) => (
+          {settings.itCategories?.map((cat) => (
             <option key={cat} value={cat}>
               {cat}
             </option>

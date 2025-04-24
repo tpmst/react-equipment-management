@@ -1,8 +1,7 @@
 [
   {
-    "id": 1,
     "username": "admin",
-    "password": "1234",
+    "password": "$2a$10$wWHeH.woh7.U.6x3KYCka.489idze2Mcl3o7tP9W1l0ygxGTgUvUi",
     "group": "admin",
     "email": ""
   }

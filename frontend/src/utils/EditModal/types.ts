@@ -7,7 +7,7 @@ export interface EditModalProps {
     selctableUsernames: string[];
     selectableDevices: string[];
   }
-  
+
   export interface EditModalPropsKlein {
     isOpen: boolean;
     onClose: () => void;

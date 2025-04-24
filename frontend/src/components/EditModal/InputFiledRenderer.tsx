@@ -141,7 +141,7 @@ const InputFieldRenderer: React.FC<Props> = ({
   const translatedCases = {
     status: t("csvheader.status"),
     id: t("csvheader.id"),
-    billnum: t("csvheader.billnum"),
+    serialnumber: t("csvheader.serialnumber"),
     orderlink: t("csvheader.orderlink"),
     amount: t("csvheader.amount"),
     unitprice: t("csvheader.unitprice"),
@@ -502,6 +502,27 @@ const InputFieldRenderer: React.FC<Props> = ({
             <ContentCopyIcon className="text-gray-500 dark:text-gray-300 w-5 h-5" />
           </button>
         </div>
+      );
+
+    case translatedCases.id:
+      return (
+        <input
+          type="text"
+          value={formData[index] || ""}
+          onChange={(e) => handleInputChange(index, e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded"
+          disabled={true}
+        />
+      );
+    case translatedCases.serialnumber:
+      return (
+        <input
+          type="text"
+          value={formData[index] || ""}
+          onChange={(e) => handleInputChange(index, e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded"
+          disabled={formData[14] !== "3"}
+        />
       );
 
     default:

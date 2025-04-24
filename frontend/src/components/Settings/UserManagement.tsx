@@ -101,6 +101,10 @@ const UserManagement: React.FC = () => {
         )
       );
       setIsEditModalOpen(false);
+      setUsername("");
+      setPassword("");
+      setUserGroup("");
+      setEmail(""); // Clear email field
     } catch (error) {
       setError("Error updating user");
     }

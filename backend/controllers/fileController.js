@@ -36,7 +36,7 @@ const upload = multer({ storage: storage });
 function uploadFile(req, res) {
     // Construct the full file path where the uploaded file is stored
     const filePath = path.join(__dirname, '../files/uploads', req.file.filename);
-    logAction(req, "uploadFile", filePath)
+    logAction(req, "uploadFile", req.file.filename)
 
     // Respond with a success message and file path
     res.json({ message: 'File uploaded successfully', filePath });
@@ -86,7 +86,7 @@ function downloadFile(req, res) {
 
     // Check if the file exists before attempting to send it
     if (fs.existsSync(filePath)) {
-        logAction(req, "downloadFile", filePath)
+        logAction(req, "downloadFile", req.params.filename)
         res.download(filePath); // Send the file for download
     } else {
         logError(req, "downloadFile", error)
@@ -105,7 +105,7 @@ function downloadFileSigned(req, res) {
 
     // Check if the file exists before attempting to send it
     if (fs.existsSync(filePath)) {
-        logAction(req, "downloadFileSigned", filePath)
+        logAction(req, "downloadFileSigned", req.params.filename)
         res.download(filePath); // Send the file for download
     } else {
         logError(req, "downloadFileSigned", error)

@@ -10,6 +10,7 @@ This project is a web application designed to manage and track IT procurement pr
   - [Installing Dependencies](#installing-dependencies)
   - [Configuring the Environment](#configuring-the-environment)
   - [Setting Up the PDF Template](#setting-up-the-pdf-template)
+  - [Create necessary folder](#create-necessary-folder)
 - [Running the Application](#running-the-application)
   - [Starting the Backend Server](#starting-the-backend-server)
   - [Starting the Frontend](#starting-the-frontend)
@@ -58,16 +59,39 @@ yarn install
 ```
 
 ### Configuring the Environment
-Create a .env file in the root directory to store your environment variables. Below is a sample configuration:
+Create a env.js file in the public directory to store your environment variables. Below is a sample configuration:
 
 ```bash
-# Backend
-PORT=3000
-JWT_SECRET=your_jwt_secret_key
-
-# Frontend
-REACT_APP_API_URL=http://localhost:3000
+API_URL: "",
+API_PORT: "",
+COMPANY_NAME: "",
 ```
+
+Then go to the backend in the .env file and change it according to your environment.
+
+```bash
+JWT_SECRET=my_super_secure_secret
+JWT_REFRESH_SECRET=my_refresh_secret
+JWT_EXPIRATION=2h
+REFRESH_TOKEN_EXPIRATION=7d
+
+#network conf
+API_PORT=3000
+
+#frontend conf
+FRONTEND_URL=
+FRONTEND_URL_BACKUP=http://localhost
+
+#backend conf
+BACKEND_URL=
+
+# only if rest Password is active
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USER=someUser
+EMAIL_PASS=somePassword
+```
+
 Make sure to replace your_jwt_secret_key with a secure string.
 
 ### Default User
@@ -83,7 +107,7 @@ Navigate to the templates directory in your project:
 ```bash
 mkdir -p templates
 ```
-Create a template-betrieb.json file inside the templates directory. This file should contain the template for the PDF generation.
+Create a ```template-betrieb.json``` file inside the templates directory. This file should contain the template for the PDF generation.
 You can create own Templates on https://pdfme.com/template-design.
 
 Example template:
@@ -107,6 +131,14 @@ Example template:
 }
 ```
 Adjust the positions and fields according to your specific requirements.
+
+### Create necessary folder
+
+Go to the ```backend/files``` and create the following folders
+1. rechnungen
+2. pdf
+3. uploads
+4. investantrag
 
 ## Running the Application
 ### Starting the Backend Server

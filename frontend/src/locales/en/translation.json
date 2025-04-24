@@ -7,7 +7,8 @@
     "thisYearSpendingIT": "Spending on IT Infrastructure This Year",
     "thisMonthSpending": "Spending This Month",
     "hardwareThisYear": "Issued Hardware This Year",
-    "hardwareThisYearIT": "Number of Ordered Devices for IT Infrastructure",
+    "hardwareThisYearIT": "Number of Devices Ordered for IT Infrastructure",
+    "software": "Number of Software Ordered for IT Infrastructure",
     "comparedToLastYear": "compared to last year",
     "comparedToLastMonth": "compared to last month",
     "counterLevels": "Counter Levels",
@@ -16,8 +17,16 @@
     "mostOrderedProductS": "Most Ordered Software",
     "mostOrderedProductH": "Most Ordered Hardware",
     "conditionAnalysis": "Condition Analysis",
-    "TotalSupscriptionsUser": "Monthly Costs for Subscriptions",
-    "monthlySupscriptionIT": "Monthly Costs for Rented/Leased IT Devices"
+    "TotalSupscriptionsUser": "Monthly Subscription Costs",
+    "monthlySupscriptionIT": "Monthly Costs for Rented/Leased IT Equipment",
+    "averageSubscriptionCost": "Average Subscription Cost",
+    "averageSubscriptionDuration": "Average Subscription Duration",
+    "totalDevices": "Total Number of Devices",
+    "totalSoftware": "Total Purchased Software",
+    "activeSubscriptions": "Active and Inactive Subscriptions",
+    "spendingByCategory": "Spending by Category",
+    "spendingByCategoryIT": "Spending on IT Infrastructure by Category",
+    "softwarePurchases": "Software Purchases"
   },
   "error": {
     "noToken": "No token found, please log in.",
@@ -32,8 +41,8 @@
     "totalHardwareSoftware": "Total Spending on Hardware/Software",
     "monthlySpending": "Monthly Spending",
     "departmentTotalSpending": "Total Spending by Department",
-    "departmentHardwareGivenOut": "Ordered Hardware for Departments",
-    "top20UsersWithMostHardware": "Top 20 Users with the Most Issued Devices"
+    "departmentHardwareGivenOut": "Ordered Hardware by Departments",
+    "top20UsersWithMostHardware": "Top 20 Users with Most Issued Devices"
   },
   "tonerLevels": {
     "black": "Black",
@@ -63,7 +72,7 @@
     "november": "November",
     "december": "December"
   },
-  "totals": "Total Costs for ",
+  "totals": "Total Cost for ",
   "table": {
     "name": "Name",
     "ipAddress": "IP Address",
@@ -74,13 +83,13 @@
   "settings": {
     "title": "Settings",
     "general": "General",
-    "hardware": "Standard Hardware",
+    "hardware": "Default Hardware",
     "user": "User Management",
     "group": "Group Management",
     "files": "File Management"
   },
   "standardHardware": {
-    "addItemPlaceholder": "Add New Standard Item",
+    "addItemPlaceholder": "Add New Default Item",
     "links": "Links",
     "linkText": "Title",
     "linkUrl": "URL",
@@ -112,14 +121,14 @@
     "download": "Download",
     "download1": "Download Unsigned File",
     "download2": "Download Signed File",
-    "upload": "Upload File"
+    "upload": "Upload File",
+    "specialType": "Create Equipment Handover"
   },
   "filesettings": {
     "header1": "Delete a row from the selected CSV",
     "header2": "Delete a file that was uploaded by mistake"
   },
-  "logheader": "Search in Logs",
-  
+  "logheader": "Search Logs",
   "csvheader": {
     "status": "Status",
     "id": "ID",
@@ -127,32 +136,32 @@
     "orderlink": "Order Link",
     "amount": "Quantity",
     "unitprice": "Unit Price",
-    "type": "Hardware/Software",
+    "type": "Hard/Software",
     "productname": "Product Name",
     "condition": "Condition",
     "orderdate": "Order Date",
-    "orderedby": "Ordered by",
+    "orderedby": "Ordered By",
     "department": "Department",
-    "orderedfor": "Ordered for",
+    "orderedfor": "Ordered For",
     "investmentrequest": "Investment Request",
     "invoicefile": "Invoice File",
     "purchaseoption": "Purchase Option",
     "cancellation": "Cancellation",
     "requestdate": "Request Date",
     "recipient": "Recipient",
-    "orderedbyIT": "Ordered by (IT)",
-    "serialnumber": "S/N",
+    "orderedbyIT": "Ordered By (IT)",
+    "serialnumber": "Serial Number",
     "operatingresource": "Operating Resource",
     "accessories": "Accessories",
     "specialfeatures": "Special Features/Defects",
     "signed": "Signed",
-    "path": "Path"
+    "path": "Filename"
   },
   "orderoption": {
     "buy": "Buy",
-    "lease": "Per Month",
-    "lease2": "Per Year",
-    "cancel": "Canceled",
+    "lease": "per Month",
+    "lease2": "per Year",
+    "cancel": "Cancelled",
     "at": "on"
   },
   "satusfields": {
@@ -160,7 +169,7 @@
     "ordered": "Ordered",
     "delivered": "Delivered",
     "deployed": "Deployed",
-    "cancel": "Canceled"
+    "cancel": "Cancelled"
   },
   "modal": {
     "editData": "Edit Data"
@@ -170,7 +179,7 @@
       "selectDate": "Select Date"
     },
     "select": {
-      "orderedbyIT": "Select Ordered by (IT)",
+      "orderedbyIT": "Select Ordered By (IT)",
       "department": "Select Department",
       "operatingresource": "Select Operating Resource"
     },
@@ -183,8 +192,9 @@
     "device": "Device",
     "serialnumber": "SN",
     "recipient": "Recipient",
-    "issuedby": "Issued by",
+    "issuedby": "Issued By",
     "returndate": "Return Date",
-    "receivedby": "Received by"
-  }
+    "receivedby": "Received By"
+  },
+  "days": " days"
 }

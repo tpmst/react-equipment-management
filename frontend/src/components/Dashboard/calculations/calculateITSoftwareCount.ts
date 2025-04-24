@@ -1,6 +1,6 @@
-export const calculateCountIT = (
+export const calculateCountITSoftware = (
   data: string[][],
-  setCountIT: (value: number) => void
+  setCountITSoftware: (value: number) => void
 ) => {
   let userHardwareCount = 0;
   const currentYear = new Date().getFullYear();
@@ -10,11 +10,11 @@ export const calculateCountIT = (
     const date = new Date(dateString);
 
     if (date.getFullYear() === currentYear) {
-      if(row[4] !== "Software"){
-        userHardwareCount += 1;
+      if(row[4] === "Software"){
+      userHardwareCount += 1;
       }
     }
   });
 
-  setCountIT(userHardwareCount);
+  setCountITSoftware(userHardwareCount);
 };
