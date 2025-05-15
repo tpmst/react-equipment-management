@@ -26,6 +26,7 @@ This project is a web application designed to manage and track IT procurement pr
 - [Adding a Printer](#adding-a-printer)
 - [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
+- [ToDos](#todos)
 - [License](#license)
 
 ## Prerequisites
@@ -284,6 +285,10 @@ Fork the repository.
 Create a new branch.
 Make your changes.
 Submit a pull request.
+
+## Todos
+- Printermanagemaent (Contracts, Cost, SerialNumber, Printername) <-- Done but not uploaded to github
+- Licence Managment (Software, Licence Key, User, Seller, Usedate, Cost, End of Licence) 
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
