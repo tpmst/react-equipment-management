@@ -287,7 +287,6 @@ Make your changes.
 Submit a pull request.
 
 ## Todos
-- Printermanagemaent (Contracts, Cost, SerialNumber, Printername) <-- Done but not uploaded to github
 - Licence Managment (Software, Licence Key, User, Seller, Usedate, Cost, End of Licence) 
 
 ## License

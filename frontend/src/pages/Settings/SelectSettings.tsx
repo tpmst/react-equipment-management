@@ -6,6 +6,8 @@ import {
   Button,
   Typography,
   IconButton,
+  Tooltip,
+  Box,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -18,7 +20,7 @@ interface Settings {
   departments: string[];
   categories: string[];
   conditions: string[];
-  itCategories: string[]; // New property for IT categories
+  itCategories: string[];
 }
 
 const SelectSettings = () => {
@@ -28,22 +30,22 @@ const SelectSettings = () => {
     departments: "",
     categories: "",
     conditions: "",
-    itCategories: "", // New field for IT categories
+    itCategories: "",
   });
+
   const { settings, updateSettings, loading, error } = useSettings();
   const [localSettings, setLocalSettings] = useState<Settings | null>(null);
 
   useEffect(() => {
     if (settings) {
-      setLocalSettings((prevSettings) => ({
-        ...prevSettings,
+      setLocalSettings({
         orderedBy: settings.orderedBy || [],
         betriebsmittel: settings.betriebsmittel || [],
         departments: settings.departments || [],
         categories: settings.categories || [],
         conditions: settings.conditions || [],
-        itCategories: settings.itCategories || [], // Initialize itCategories
-      }));
+        itCategories: settings.itCategories || [],
+      });
     }
   }, [settings]);
 
@@ -53,7 +55,6 @@ const SelectSettings = () => {
     value: string
   ) => {
     if (!localSettings) return;
-
     const updated = { ...localSettings };
     updated[field][index] = value;
     setLocalSettings(updated);
@@ -61,24 +62,20 @@ const SelectSettings = () => {
 
   const handleAddItem = (field: keyof Settings) => {
     if (!localSettings || !newItem[field]) return;
-
     const updatedSettings = { ...localSettings };
     updatedSettings[field] = [...updatedSettings[field], newItem[field]];
-
     setLocalSettings(updatedSettings);
     setNewItem({ ...newItem, [field]: "" });
   };
 
   const handleRemoveItem = (field: keyof Settings, index: number) => {
     if (!localSettings) return;
-
     const updatedSettings = { ...localSettings };
     updatedSettings[field].splice(index, 1);
-
     setLocalSettings(updatedSettings);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (localSettings) {
       updateSettings(localSettings);
@@ -88,56 +85,81 @@ const SelectSettings = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div className="text-red-500">{error}</div>;
 
-  const color = "#e9e7d8";
-
   return (
-    <div className="p-6">
+    <Box sx={{ padding: 4 }}>
       <form onSubmit={handleSubmit}>
-        {/* Horizontal scrollable container */}
-        <div
-          className="flex overflow-x-auto space-x-6 pb-4"
-          style={{
-            whiteSpace: "nowrap",
-            paddingBottom: "1rem",
+        {/* Scrollbar at top */}
+        <Box
+          sx={{
+            transform: "rotateX(180deg)",
+            overflowX: "auto",
+            display: "flex",
+            gap: 3,
+            pb: 2,
+            alignItems: "stretch",
             scrollbarWidth: "thin",
+            "&::-webkit-scrollbar": {
+              height: "6px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "#c1c1c1",
+              borderRadius: "4px",
+            },
+            "&::-webkit-scrollbar-track": {
+              backgroundColor: "#f0f0f0",
+            },
           }}
         >
           {Object.keys(localSettings || {}).map((field) => (
-            <div
-              className="inline-block"
+            <Box
               key={field}
-              style={{
-                minWidth: "320px",
-                maxWidth: "320px",
+              sx={{
+                bgcolor: "#e9e7d8",
+                transform: "rotateX(180deg)",
+                minWidth: 320,
+                maxWidth: 320,
                 flexShrink: 0,
+                display: "flex",
+                flexDirection: "column",
+                mx: 0.25, // ⬅ horizontal margin
+                my: 0.5, // ⬅ vertical margin (also gives shadow space)
               }}
             >
               <Card
                 variant="outlined"
-                style={{
-                  borderRadius: "12px",
-                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                  backgroundColor: color,
+                sx={{
+                  flex: 1,
+                  borderRadius: 3,
+                  boxShadow: 3,
+                  bgcolor: "#e9e7d8",
+                  display: "flex",
+                  flexDirection: "column",
                 }}
               >
-                <CardContent>
+                <CardContent
+                  sx={{ flex: 1, display: "flex", flexDirection: "column" }}
+                >
                   <Typography
                     variant="h6"
-                    component="h2"
-                    gutterBottom
-                    style={{ textAlign: "center", fontWeight: "bold" }}
+                    align="center"
+                    sx={{
+                      fontWeight: "bold",
+                      mb: 2,
+                      textTransform: "capitalize",
+                    }}
                   >
-                    {field.charAt(0).toUpperCase() + field.slice(1)}
+                    {field}
                   </Typography>
-                  {localSettings &&
-                    (localSettings as any)[field].map(
+
+                  <Box sx={{ flex: 1, overflowY: "auto", pr: 1 }}>
+                    {(localSettings as any)[field].map(
                       (item: string, index: number) => (
-                        <div
+                        <Box
                           key={index}
-                          className="mb-2 flex items-center"
-                          style={{ gap: "8px" }}
+                          sx={{ display: "flex", gap: 1, mb: 1 }}
                         >
                           <TextField
+                            className="bg-[#e8e6db]"
                             variant="outlined"
                             value={item}
                             onChange={(e) =>
@@ -148,54 +170,66 @@ const SelectSettings = () => {
                               )
                             }
                             fullWidth
+                            size="small"
                           />
-                          <IconButton
-                            onClick={() =>
-                              handleRemoveItem(field as keyof Settings, index)
-                            }
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </div>
+                          <Tooltip title={t("buttons.delete")}>
+                            <IconButton
+                              color="error"
+                              onClick={() =>
+                                handleRemoveItem(field as keyof Settings, index)
+                              }
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </Box>
                       )
                     )}
+                  </Box>
 
-                  <div
-                    className="mb-2 flex items-center"
-                    style={{ gap: "8px" }}
-                  >
+                  <Box sx={{ display: "flex", gap: 1, mt: 2 }}>
                     <TextField
                       variant="outlined"
                       value={newItem[field as keyof Settings]}
                       onChange={(e) =>
                         setNewItem({ ...newItem, [field]: e.target.value })
                       }
-                      placeholder={`Add new ${field}`}
+                      placeholder={t("placeholders.addItem", { field })}
                       fullWidth
+                      size="small"
                     />
-                    <IconButton
-                      color="primary"
-                      onClick={() => handleAddItem(field as keyof Settings)}
-                    >
-                      <AddIcon />
-                    </IconButton>
-                  </div>
+                    <Tooltip title={t("buttons.add")}>
+                      <IconButton
+                        color="primary"
+                        onClick={() => handleAddItem(field as keyof Settings)}
+                      >
+                        <AddIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
                 </CardContent>
               </Card>
-            </div>
+            </Box>
           ))}
-        </div>
+        </Box>
 
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          style={{ marginTop: "1rem" }}
-        >
-          {t("buttons.save")}
-        </Button>
+        <Box sx={{ textAlign: "center", mt: 4 }}>
+          <Button
+            type="submit"
+            variant="contained"
+            size="large"
+            sx={{
+              paddingX: 4,
+              paddingY: 1,
+              fontWeight: "bold",
+              borderRadius: 3,
+            }}
+          >
+            {t("buttons.save")}
+          </Button>
+        </Box>
       </form>
-    </div>
+    </Box>
   );
 };
 

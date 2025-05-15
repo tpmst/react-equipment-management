@@ -9,5 +9,13 @@
     "telefon",
     "settings",
     "it"
+  ],
+  "einkauf": [
+    "dashboard",
+    "einkauf"
+  ],
+  "buha": [
+    "dashboard",
+    "einkauf"
   ]
 }

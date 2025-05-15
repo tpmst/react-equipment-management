@@ -16,7 +16,7 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <ThemeProvider>
-        <Router>
+        <Router basename="/edv-bestellung">
           <Routes>
             {/* Public Route */}
             <Route path="/login" element={<Login />} />

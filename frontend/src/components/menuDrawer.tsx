@@ -21,6 +21,7 @@ import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import DrawerCard from "./drawer/drawerCard";
 import clsx from "clsx"; // for conditional class joining
 import { useTheme } from "../context/themeContext";
+import { useAuth } from "../context/AuthenticationContext";
 
 interface MenuDrawerProps {
   setSite: (site: string) => void;
@@ -29,6 +30,7 @@ interface MenuDrawerProps {
 export default function MenuDrawer({ setSite }: MenuDrawerProps) {
   const [isExpanded, setIsExpanded] = React.useState(false);
   const { theme } = useTheme(); // Get the current theme from the ThemeProvider
+  const { userName } = useAuth();
 
   const textColor = theme === "light" ? "#444444" : "#ffffff";
   const bg = theme === "light" ? "#eceadb" : "#1e293b";
@@ -287,35 +289,36 @@ export default function MenuDrawer({ setSite }: MenuDrawerProps) {
                   </ListItem>
                 </DrawerCard>
 
-                <div className="m-2"></div>
-                <DrawerCard>
-                  <ListItem disablePadding>
-                    <ListItemButton
-                      onClick={() => handleMenuClick("telefon")}
-                      sx={{ height: 40, padding: 1, paddingLeft: 2 }}
-                    >
-                      <ListItemIcon>
-                        <SimCardIcon
-                          sx={{
-                            color: textColor,
-                          }}
-                        />
-                      </ListItemIcon>
-                      {isExpanded && (
-                        <ListItemText
-                          primary="Telefonverträge"
-                          sx={{
-                            color: textColor,
-                            height: 16,
-                            alignItems: "center",
-                            justifyItems: "center",
-                            paddingBottom: 3,
-                          }}
-                        />
-                      )}
-                    </ListItemButton>
-                  </ListItem>
-                </DrawerCard>
+                {userName === "tom" && (
+                  <DrawerCard>
+                    <ListItem disablePadding>
+                      <ListItemButton
+                        onClick={() => handleMenuClick("telefon")}
+                        sx={{ height: 40, padding: 1, paddingLeft: 2 }}
+                      >
+                        <ListItemIcon>
+                          <SimCardIcon
+                            sx={{
+                              color: textColor,
+                            }}
+                          />
+                        </ListItemIcon>
+                        {isExpanded && (
+                          <ListItemText
+                            primary="Telefonverträge"
+                            sx={{
+                              color: textColor,
+                              height: 16,
+                              alignItems: "center",
+                              justifyItems: "center",
+                              paddingBottom: 3,
+                            }}
+                          />
+                        )}
+                      </ListItemButton>
+                    </ListItem>
+                  </DrawerCard>
+                )}
 
                 {/*<div className="m-2"></div>
                  */}

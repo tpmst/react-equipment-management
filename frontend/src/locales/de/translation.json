@@ -26,7 +26,8 @@
     "activeSubscriptions":"Aktive und inaktive Abos",
     "spendingByCategory":"Ausgaben nach Kategorie",
     "spendingByCategoryIT": "Ausgaben für IT-Infrastruktur nach Kategorie",
-    "softwarePurchases":"Softwarekäufe"
+    "softwarePurchases":"Softwarekäufe",
+    "printerList":"Druckerauflistung"
   },
   "error": {
     "noToken": "Kein Token gefunden, bitte loggen Sie sich ein.",
@@ -122,7 +123,8 @@
     "download1": "Nicht unterschrieben Datei herunterladen",
     "download2": "Unterschriebe Datei herunterladen",
     "upload": "Datei hochladen",
-    "specialType": "Betriebmittelübergabe erstellen"
+    "specialType": "Betriebmittelübergabe erstellen",
+    "connectContract": "Vertäge sind Verbunden"
   },
   "filesettings": {
     "header1": "Eine Zeile aus der ausgewählten CSV löschen",
@@ -156,7 +158,14 @@
     "accessories": "Zubehör",
     "specialfeatures": "Besonderheiten/Mängel",
     "signed": "Unterschrieben",
-    "path": "Dateiname"
+    "path": "Dateiname",
+    "name":"Druckername",
+    "canceldate":"Kündigungsdatum",
+    "purchaseprice":"Kosten",
+    "contractfile":"Miet/Kaufvertag",
+    "maintanacefile":"Wartungsvertrag",
+    "seller":"Verkäufer"
+    
   },
     "orderoption":{
       "buy":"Kaufen",
@@ -173,7 +182,9 @@
       "cancel": "Abgebrochen"
     },
     "modal": {
-    "editData": "Daten bearbeiten"
+    "editData": "Daten bearbeiten",
+    "contractConnected": "Achtung in der PDF sind beide Vertäge enthalten"
+
   },
   "form": {
     "placeholders": {

@@ -220,16 +220,15 @@ const Dashboard = () => {
 
         mainData.slice(1).forEach((row) => {
           const softwareName = row[6];
+          const count = parseInt(row[3], 10); // Assuming count is in column index 3
 
           // Only consider rows that meet the subscription type criteria
-          if (row[15] === "2" || row[15] === "3") {
-            if (row[16].length < 3) {
-              if (softwareName) {
-                if (softwareCountMap[softwareName]) {
-                  softwareCountMap[softwareName]++;
-                } else {
-                  softwareCountMap[softwareName] = 1;
-                }
+          if (row[5] === "Software") {
+            if (softwareName) {
+              if (softwareCountMap[softwareName]) {
+                softwareCountMap[softwareName]++;
+              } else {
+                softwareCountMap[softwareName] = count || 1;
               }
             }
           }

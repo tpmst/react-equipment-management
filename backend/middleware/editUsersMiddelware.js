@@ -41,8 +41,8 @@ router.post("/users/add", authenticateToken, (req, res) => {
   }
 
   const { username, password, group, email } = req.body;
-  if (!username || !password || !group || !email) {
-    return res.status(400).json({ message: "All fields (username, password, group, email) are required" });
+  if (!username || !password || !group) {
+    return res.status(400).json({ message: "All fields (username, password, group) are required" });
   }
 
   const users = getUsers();

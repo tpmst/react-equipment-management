@@ -119,6 +119,63 @@ function downloadFileInvest(req, res) {
     }
 }
 
+// Setup for "contracts" Uploads
+
+/**
+ * Configures multer for storing uploaded "contracts" files.
+ */
+const storageContract = multer.diskStorage({
+    destination: (req, file, cb) => {
+        // Define the upload path
+        const uploadPath = path.join(__dirname, '../files/contracts', req.query.folder);
+
+        // Check if the directory exists, if not, create it
+        if (!fs.existsSync(uploadPath)) {
+            fs.mkdirSync(uploadPath); // Create the directory if it doesn't exist
+        }
+
+        cb(null, uploadPath); // Pass the destination path to multer
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname); // Use the original file name for storage
+    },
+});
+
+// Initialize multer with the defined storage configuration
+const uploadContract = multer({ storage: storageContract });
+
+/**
+ * Handles file uploads for "contracts" (Investment Requests).
+ * @param {Object} req - Express request object containing the uploaded file.
+ * @param {Object} res - Express response object for sending responses.
+ */
+function uploadFileContract(req, res) {
+    // Construct the full file path where the uploaded file is stored
+    const filePath = path.join(__dirname, '../files/contracts/', req.query.folder, req.file.filename);
+    logAction(req, "uploadContracts", filePath)
+    // Respond with a success message and file path
+    res.json({ message: 'File uploaded successfully', filePath });
+}
+
+/**
+ * Handles file downloads for "contracts".
+ * @param {Object} req - Express request object containing filename as a parameter.
+ * @param {Object} res - Express response object for sending the file.
+ */
+function downloadContract(req, res) {
+    // Construct the full file path for the requested file
+    const filePath = path.join(__dirname, '../files/contracts/',req.query.folder , req.params.filename);
+
+    // Check if the file exists before attempting to send it
+    if (fs.existsSync(filePath)) {
+        logAction(req, "downloadContracts", filePath)
+        res.download(filePath); // Send the file for download
+    } else {
+        logError(req, "downloadFileContracts", error)
+        res.status(404).json({ message: 'File not found' }); // Return 404 if file is missing
+    }
+}
+
 // Export functions for use in Express routes
 module.exports = {
     downloadFileRechnungen,
@@ -128,4 +185,8 @@ module.exports = {
     uploadFileEinkaufInvest,
     uploadInvest,
     downloadFileInvest,
+
+    downloadContract,
+    uploadContract,
+    uploadFileContract,
 };

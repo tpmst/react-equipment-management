@@ -6,15 +6,15 @@ import {
   ReactNode,
 } from "react";
 import axios from "axios";
-import { API_BASE_URL } from "../security/config"; // API Base URL
+import { API_BASE_URL } from "../security/config";
 
-// Define the shape of Link
+// Define the shape of a Link (used in standardHardware)
 interface Link {
   text: string;
   url: string;
 }
 
-// Define the shape of your settings, including standardHardware with links
+// Define the shape of all configurable settings
 interface Settings {
   orderedBy?: string[];
   betriebsmittel?: string[];
@@ -22,10 +22,12 @@ interface Settings {
   categories?: string[];
   conditions?: string[];
   standardHardware?: { item: string; links: Link[] }[];
-  itCategories?: string[]; // New property for IT categories
+  itCategories?: string[];
+  enablePrinters?: string[]; // New toggle
+  enableBetriebsmitteleintrag?: string[]; // New toggle
 }
 
-// Default settings fallback in case the backend call fails
+// Default settings to fall back on
 const defaultSettings: Settings = {
   orderedBy: [],
   betriebsmittel: [],
@@ -33,7 +35,9 @@ const defaultSettings: Settings = {
   categories: [],
   conditions: [],
   standardHardware: [],
-  itCategories: [], // Default value for IT categories
+  itCategories: [],
+  enablePrinters: ["false"],
+  enableBetriebsmitteleintrag: ["false"],
 };
 
 // Create the context
@@ -49,44 +53,50 @@ const SettingsContext = createContext<{
   error: null,
 });
 
-// Create a custom hook to use the SettingsContext
+// Custom hook for using the context
 export const useSettings = () => useContext(SettingsContext);
 
-// Create a provider component to wrap your app
+// Provider component
 export const SettingsProvider = ({ children }: { children: ReactNode }) => {
   const [settings, setSettings] = useState<Settings>(defaultSettings);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch settings from the backend
+  // Load settings from backend
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const token = localStorage.getItem("token"); // Get the token from local storage
+        const token = localStorage.getItem("token");
         const response = await axios.get(`${API_BASE_URL}/getConfig`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
-        // Make sure the response structure matches your new Settings structure
         if (response.data) {
           const fetchedSettings: Settings = response.data;
-          setSettings(fetchedSettings); // Load the settings from the backend
+
+          // Merge with defaults to ensure new keys like enablePrinters exist
+          const mergedSettings: Settings = {
+            ...defaultSettings,
+            ...fetchedSettings,
+          };
+
+          setSettings(mergedSettings);
         } else {
           setError("Invalid settings structure from server.");
         }
       } catch (err: any) {
         setError(err.message || "Error fetching settings");
       } finally {
-        setLoading(false); // Stop loading after the API call
+        setLoading(false);
       }
     };
 
     fetchSettings();
   }, []);
 
-  // Function to update settings (also sends the update to the backend)
+  // Update settings on backend and in context
   const updateSettings = async (newSettings: Settings) => {
     try {
       const token = localStorage.getItem("token");
@@ -98,11 +108,12 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setSettings(newSettings); // Update the settings globally
+
+      setSettings(newSettings);
     } catch (err: any) {
       setError(err.message || "Error updating settings");
     } finally {
-      setLoading(false); // Stop loading after the update
+      setLoading(false);
     }
   };
 

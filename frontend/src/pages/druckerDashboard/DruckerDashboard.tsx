@@ -1,39 +1,57 @@
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import Zaelerstaende from "./Zählerstände";
-import Tonerlevels from "./Tonerstände";
-import NormalCard from "../../components/normalCrard";
+import { useState } from "react";
+import { Tabs, Tab, Box, List, ListItem } from "@mui/material";
+import Zaelerstaende from "../../components/Printerdashboard/Zählerstände";
+import Tonerlevels from "../../components/Printerdashboard/Tonerstände";
 import { useTranslation } from "react-i18next"; // Import the useTranslation hook
+import PrinterList from "../../components/Printerdashboard/PrinterList";
 
-// Dashboard component for displaying financial data in charts
 const DruckerDashboard = () => {
-  const { t } = useTranslation(); // Use the translation hook
+  const { t } = useTranslation(); // Use translation hook
+  const [selectedTab, setSelectedTab] = useState(0); // Track active tab
 
   return (
-    <div>
-      <Divider />
+    <div className="p-4">
+      {/* Tabs for switching between different sections */}
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs
+          value={selectedTab}
+          onChange={(_, newValue) => setSelectedTab(newValue)}
+          aria-label="Drucker Dashboard Tabs"
+          variant="fullWidth"
+        >
+          <Tab label={t("dashboard.counterLevels")} />
+          <Tab label={t("dashboard.printerList")} />
+        </Tabs>
+      </Box>
 
-      <div className="flex flex-row justify-around p-4">
-        <div>
-          <NormalCard title={t("dashboard.counterLevels")}>
-            <List>
-              <ListItem>
-                <Zaelerstaende />
-              </ListItem>
-            </List>
-          </NormalCard>
-        </div>
-        <div>
-          <NormalCard title={t("dashboard.tonerLevels")}>
-            <List>
-              <ListItem>
-                <Tonerlevels />
-              </ListItem>
-            </List>
-          </NormalCard>
-        </div>
-      </div>
+      {/* Render components based on selected tab */}
+      <Box sx={{ mt: 2 }}>
+        {selectedTab === 0 && (
+          <div>
+            <div className="flex flex-row justify-around p-4">
+              <div>
+                <List>
+                  <ListItem>
+                    <Zaelerstaende />
+                  </ListItem>
+                </List>
+              </div>
+              <div>
+                <List>
+                  <ListItem>
+                    <Tonerlevels />
+                  </ListItem>
+                </List>
+              </div>
+            </div>
+          </div>
+        )}
+        {selectedTab === 1 && (
+          <div>
+            <PrinterList />
+          </div>
+        )}
+      </Box>
     </div>
   );
 };

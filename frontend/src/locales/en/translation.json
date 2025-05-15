@@ -6,9 +6,9 @@
     "thisYearSpending": "Spending This Year",
     "thisYearSpendingIT": "Spending on IT Infrastructure This Year",
     "thisMonthSpending": "Spending This Month",
-    "hardwareThisYear": "Issued Hardware This Year",
-    "hardwareThisYearIT": "Number of Devices Ordered for IT Infrastructure",
-    "software": "Number of Software Ordered for IT Infrastructure",
+    "hardwareThisYear": "Hardware Issued This Year",
+    "hardwareThisYearIT": "Devices Ordered for IT Infrastructure",
+    "software": "Software Ordered for IT Infrastructure",
     "comparedToLastYear": "compared to last year",
     "comparedToLastMonth": "compared to last month",
     "counterLevels": "Counter Levels",
@@ -18,15 +18,16 @@
     "mostOrderedProductH": "Most Ordered Hardware",
     "conditionAnalysis": "Condition Analysis",
     "TotalSupscriptionsUser": "Monthly Subscription Costs",
-    "monthlySupscriptionIT": "Monthly Costs for Rented/Leased IT Equipment",
+    "monthlySupscriptionIT": "Monthly Rental/Leasing Costs for IT Devices",
     "averageSubscriptionCost": "Average Subscription Cost",
     "averageSubscriptionDuration": "Average Subscription Duration",
     "totalDevices": "Total Number of Devices",
     "totalSoftware": "Total Purchased Software",
     "activeSubscriptions": "Active and Inactive Subscriptions",
     "spendingByCategory": "Spending by Category",
-    "spendingByCategoryIT": "Spending on IT Infrastructure by Category",
-    "softwarePurchases": "Software Purchases"
+    "spendingByCategoryIT": "IT Infrastructure Spending by Category",
+    "softwarePurchases": "Software Purchases",
+    "printerList": "Printer List"
   },
   "error": {
     "noToken": "No token found, please log in.",
@@ -38,10 +39,10 @@
     "printerOffline": "The selected printer is offline"
   },
   "charts": {
-    "totalHardwareSoftware": "Total Spending on Hardware/Software",
+    "totalHardwareSoftware": "Total Hardware/Software Spending",
     "monthlySpending": "Monthly Spending",
     "departmentTotalSpending": "Total Spending by Department",
-    "departmentHardwareGivenOut": "Ordered Hardware by Departments",
+    "departmentHardwareGivenOut": "Hardware Ordered by Departments",
     "top20UsersWithMostHardware": "Top 20 Users with Most Issued Devices"
   },
   "tonerLevels": {
@@ -72,7 +73,7 @@
     "november": "November",
     "december": "December"
   },
-  "totals": "Total Cost for ",
+  "totals": "Total Costs for ",
   "table": {
     "name": "Name",
     "ipAddress": "IP Address",
@@ -89,7 +90,7 @@
     "files": "File Management"
   },
   "standardHardware": {
-    "addItemPlaceholder": "Add New Default Item",
+    "addItemPlaceholder": "Add new default item",
     "links": "Links",
     "linkText": "Title",
     "linkUrl": "URL",
@@ -122,7 +123,8 @@
     "download1": "Download Unsigned File",
     "download2": "Download Signed File",
     "upload": "Upload File",
-    "specialType": "Create Equipment Handover"
+    "specialType": "Create Operating Resource Handover",
+    "connectContract": "Contracts are Connected"
   },
   "filesettings": {
     "header1": "Delete a row from the selected CSV",
@@ -149,13 +151,19 @@
     "cancellation": "Cancellation",
     "requestdate": "Request Date",
     "recipient": "Recipient",
-    "orderedbyIT": "Ordered By (IT)",
+    "orderedbyIT": "Ordered by (IT)",
     "serialnumber": "Serial Number",
     "operatingresource": "Operating Resource",
     "accessories": "Accessories",
     "specialfeatures": "Special Features/Defects",
     "signed": "Signed",
-    "path": "Filename"
+    "path": "File Name",
+    "name": "Printer Name",
+    "canceldate": "Cancellation Date",
+    "purchaseprice": "Cost",
+    "contractfile": "Rental/Purchase Contract",
+    "maintanacefile": "Maintenance Contract",
+    "seller": "Seller"
   },
   "orderoption": {
     "buy": "Buy",
@@ -172,14 +180,15 @@
     "cancel": "Cancelled"
   },
   "modal": {
-    "editData": "Edit Data"
+    "editData": "Edit Data",
+    "contractConnected": "Note: PDF includes both contracts"
   },
   "form": {
     "placeholders": {
       "selectDate": "Select Date"
     },
     "select": {
-      "orderedbyIT": "Select Ordered By (IT)",
+      "orderedbyIT": "Select Ordered by (IT)",
       "department": "Select Department",
       "operatingresource": "Select Operating Resource"
     },
@@ -196,5 +205,5 @@
     "returndate": "Return Date",
     "receivedby": "Received By"
   },
-  "days": " days"
+  "days": " Days"
 }
