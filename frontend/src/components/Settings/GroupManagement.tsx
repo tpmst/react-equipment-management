@@ -38,9 +38,11 @@ const GroupManagement: React.FC = () => {
     "tabelle",
     "drucker",
     "einkauf",
+    "requests",
     "telefon",
     "settings",
     "it",
+    
   ]);
 
   // Fetch groups from backend

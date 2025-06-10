@@ -1,31 +1,31 @@
 {
   "dashboard": {
     "totalSpending": "Total Spending",
-    "totalSpendingUser": "Total Spending on User Devices",
-    "totalSpendingIT": "Total Spending on IT Infrastructure",
+    "totalSpendingUser": "Total Spending for User Devices",
+    "totalSpendingIT": "Total Spending for IT Infrastructure",
     "thisYearSpending": "Spending This Year",
     "thisYearSpendingIT": "Spending on IT Infrastructure This Year",
     "thisMonthSpending": "Spending This Month",
     "hardwareThisYear": "Hardware Issued This Year",
-    "hardwareThisYearIT": "Devices Ordered for IT Infrastructure",
-    "software": "Software Ordered for IT Infrastructure",
+    "hardwareThisYearIT": "Number of Devices Ordered for IT Infrastructure",
+    "software": "Number of Software Ordered for IT Infrastructure",
     "comparedToLastYear": "compared to last year",
     "comparedToLastMonth": "compared to last month",
     "counterLevels": "Counter Levels",
     "tonerLevels": "Toner Levels",
-    "averageSpending": "Average Device Cost",
+    "averageSpending": "Average Cost per Device",
     "mostOrderedProductS": "Most Ordered Software",
     "mostOrderedProductH": "Most Ordered Hardware",
     "conditionAnalysis": "Condition Analysis",
-    "TotalSupscriptionsUser": "Monthly Subscription Costs",
-    "monthlySupscriptionIT": "Monthly Rental/Leasing Costs for IT Devices",
+    "TotalSupscriptionsUser": "Monthly Costs for Subscriptions",
+    "monthlySupscriptionIT": "Monthly Costs for Rented/Leased IT Devices",
     "averageSubscriptionCost": "Average Subscription Cost",
     "averageSubscriptionDuration": "Average Subscription Duration",
     "totalDevices": "Total Number of Devices",
-    "totalSoftware": "Total Purchased Software",
+    "totalSoftware": "Total Number of Purchased Software",
     "activeSubscriptions": "Active and Inactive Subscriptions",
     "spendingByCategory": "Spending by Category",
-    "spendingByCategoryIT": "IT Infrastructure Spending by Category",
+    "spendingByCategoryIT": "Spending on IT Infrastructure by Category",
     "softwarePurchases": "Software Purchases",
     "printerList": "Printer List"
   },
@@ -39,10 +39,10 @@
     "printerOffline": "The selected printer is offline"
   },
   "charts": {
-    "totalHardwareSoftware": "Total Hardware/Software Spending",
+    "totalHardwareSoftware": "Total Spending on Hardware/Software",
     "monthlySpending": "Monthly Spending",
     "departmentTotalSpending": "Total Spending by Department",
-    "departmentHardwareGivenOut": "Hardware Ordered by Departments",
+    "departmentHardwareGivenOut": "Ordered Hardware by Department",
     "top20UsersWithMostHardware": "Top 20 Users with Most Issued Devices"
   },
   "tonerLevels": {
@@ -77,7 +77,7 @@
   "table": {
     "name": "Name",
     "ipAddress": "IP Address",
-    "printsBlackWhite": "Black & White Prints",
+    "printsBlackWhite": "Black and White Prints",
     "printsColor": "Color Prints",
     "status": "Status"
   },
@@ -105,7 +105,10 @@
     "addUser": "Add User",
     "editUser": "Edit User",
     "deleteUser": "Delete User",
-    "confirmDelete": "Are you sure you want to delete this user?"
+    "confirmDelete": "Are you sure you want to delete this user?",
+    "createApiToken": "Create API Token",
+    "deleteApiToken": "Delete API Token",
+    "apiToken": "API Token"
   },
   "groups": {
     "management": "Group Management",
@@ -120,15 +123,18 @@
     "save": "Save",
     "cancel": "Cancel",
     "download": "Download",
-    "download1": "Download Unsigned File",
-    "download2": "Download Signed File",
+    "download1": "Download unsigned file",
+    "download2": "Download signed file",
     "upload": "Upload File",
-    "specialType": "Create Operating Resource Handover",
-    "connectContract": "Contracts are Connected"
+    "specialType": "Create Handover Document",
+    "connectContract": "Contracts Connected",
+    "view": "View File",
+    "delete": "Delete",
+    "archive": "Archive"
   },
   "filesettings": {
     "header1": "Delete a row from the selected CSV",
-    "header2": "Delete a file that was uploaded by mistake"
+    "header2": "Delete a file that was accidentally uploaded"
   },
   "logheader": "Search Logs",
   "csvheader": {
@@ -136,7 +142,7 @@
     "id": "ID",
     "billnum": "Invoice Number",
     "orderlink": "Order Link",
-    "amount": "Quantity",
+    "amount": "Amount",
     "unitprice": "Unit Price",
     "type": "Hard/Software",
     "productname": "Product Name",
@@ -155,7 +161,7 @@
     "serialnumber": "Serial Number",
     "operatingresource": "Operating Resource",
     "accessories": "Accessories",
-    "specialfeatures": "Special Features/Defects",
+    "specialfeatures": "Special Features / Defects",
     "signed": "Signed",
     "path": "File Name",
     "name": "Printer Name",
@@ -163,25 +169,31 @@
     "purchaseprice": "Cost",
     "contractfile": "Rental/Purchase Contract",
     "maintanacefile": "Maintenance Contract",
-    "seller": "Seller"
+    "seller": "Seller",
+    "user": "User"
   },
   "orderoption": {
     "buy": "Buy",
-    "lease": "per Month",
-    "lease2": "per Year",
-    "cancel": "Cancelled",
+    "lease": "Per Month",
+    "lease2": "Per Year",
+    "cancel": "Canceled",
     "at": "on"
   },
   "satusfields": {
-    "toorder": "To Order",
+    "toorder": "To be Ordered",
     "ordered": "Ordered",
     "delivered": "Delivered",
     "deployed": "Deployed",
-    "cancel": "Cancelled"
+    "cancel": "Canceled",
+    "canceled": "Canceled",
+    "open": "Open",
+    "onhold": "In Progress",
+    "inprogress": "In Progress",
+    "closed": "Completed"
   },
   "modal": {
     "editData": "Edit Data",
-    "contractConnected": "Note: PDF includes both contracts"
+    "contractConnected": "Attention, both contracts are included in the PDF"
   },
   "form": {
     "placeholders": {
@@ -205,5 +217,15 @@
     "returndate": "Return Date",
     "receivedby": "Received By"
   },
-  "days": " Days"
+  "days": " days",
+  "requestpage": {
+    "addrequest": "Create New Request",
+    "myrequests": "My Requests",
+    "loading": "Loading",
+    "nodata": "No Requests Found",
+    "nothingfound": "No Requests Found"
+  },
+  "editmodal": {
+    "title": "Create Request"
+  }
 }

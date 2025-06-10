@@ -105,7 +105,10 @@
     "addUser": "Benutzer hinzufügen",
     "editUser": "Benutzer bearbeiten",
     "deleteUser": "Benutzer löschen",
-    "confirmDelete": "Möchten Sie diesen Benutzer wirklich löschen?"
+    "confirmDelete": "Möchten Sie diesen Benutzer wirklich löschen?",
+    "createApiToken":"API-Token erstellen",
+    "deleteApiToken":"API-Token löschen",
+    "apiToken":"API-Token"
   },
   "groups": {
     "management": "Gruppenverwaltung",
@@ -124,7 +127,10 @@
     "download2": "Unterschriebe Datei herunterladen",
     "upload": "Datei hochladen",
     "specialType": "Betriebmittelübergabe erstellen",
-    "connectContract": "Vertäge sind Verbunden"
+    "connectContract": "Vertäge sind Verbunden",
+    "view": "Datei anzeigen",
+    "delete": "Löschen",
+    "archive": "Archivieren"
   },
   "filesettings": {
     "header1": "Eine Zeile aus der ausgewählten CSV löschen",
@@ -164,7 +170,8 @@
     "purchaseprice":"Kosten",
     "contractfile":"Miet/Kaufvertag",
     "maintanacefile":"Wartungsvertrag",
-    "seller":"Verkäufer"
+    "seller":"Verkäufer",
+    "user":"Nutzer"
     
   },
     "orderoption":{
@@ -179,7 +186,12 @@
       "ordered": "Bestellt",
       "delivered": "Geliefert",
       "deployed": "Aufgebaut",
-      "cancel": "Abgebrochen"
+      "cancel": "Abgebrochen",
+      "canceled": "Abgebrochen",
+      "open":"Offen",
+      "onhold":"Bearbeitung pausiert",
+      "inprogress":"In Bearbeitung",
+      "closed":"Abgeschlossen"
     },
     "modal": {
     "editData": "Daten bearbeiten",
@@ -208,5 +220,15 @@
     "returndate": "Rückgabedatum",
     "receivedby": "Entgegengenommen von"
   },
-  "days":" Tage"
+  "days":" Tage",
+  "requestpage": {
+    "addrequest": "Neuen Antrag erstellen",
+    "myrequests":"Meine Anträge",
+    "loading":"Laden",
+    "nodata":"Keine Anträge gefunden",
+    "nothingfound":"Keine Anträge gefunden"
+  },
+  "editmodal":{
+    "title": "Antrag erstellen"
+  }
 }

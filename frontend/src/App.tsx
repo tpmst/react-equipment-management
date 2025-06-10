@@ -11,6 +11,8 @@ import { AuthProvider } from "./context/AuthenticationContext"; // Ensure this p
 import HomePage from "./pages/Home/HomePage";
 import { ThemeProvider } from "./context/themeContext";
 import ChangePassword from "./security/chnagePassword";
+import AnfragePage from "./pages/Anfragen/RequestPage";
+import LoginForRequest from "./pages/Anfragen/LoginForRequest";
 
 const App: React.FC = () => {
   return (
@@ -19,7 +21,7 @@ const App: React.FC = () => {
         <Router basename="/edv-bestellung">
           <Routes>
             {/* Public Route */}
-            <Route path="/login" element={<Login />} />
+            <Route path="/login-admin" element={<Login />} />
             <Route path="/change-password" element={<ChangePassword />} />
 
             {/* Protected Routes */}
@@ -31,6 +33,19 @@ const App: React.FC = () => {
                 </PrivateRoute>
               }
             />
+
+            {/* Request a device */}
+
+            <Route path="/login" element={<LoginForRequest />}></Route>
+            <Route
+              path="/request"
+              element={
+                <PrivateRoute>
+                  <AnfragePage />
+                </PrivateRoute>
+              }
+            />
+
             {/* Redirect any unknown routes to login */}
             <Route path="*" element={<Navigate to="/login" />} />
           </Routes>

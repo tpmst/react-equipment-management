@@ -1,34 +1,14 @@
-[
-  {
-    "id": 1,
-    "username": "tom",
-    "password": "$2b$10$o0ZnWSIBTf.gjXpsXFBPYOt12zpAnJNsoDaDjAAS1vY4xF2BV1nW2",
-    "group": "admin",
-    "email": "tom.stiefel@cermedica.de"
-  },
-  {
-    "id": 2,
-    "username": "nils",
-    "password": "$2b$10$KQisZci2MzlGBDrmoqT3qOOYXjZYZn430.i8brtGH077IJ6cteg/K",
-    "group": "admin"
-  },
-  {
-    "id": 3,
-    "username": "putz",
-    "password": "$2b$10$JGxaja2vgLvwn9XT4CS3EugC1t3FSsb0eDrK1Or8b9qr.79qnJ5p2",
-    "group": "admin"
-  },
-  {
-    "id": 4,
-    "username": "klippel",
-    "password": "$2b$10$VvYeVIowQQ6Vx7hep8h6W.ILYKIB5CpAOhIGb73/lE6zcJZPu5FPi",
-    "group": "einkauf",
-    "email": "test@gmail.com"
-  },
+[    
   {
     "username": "admin",
     "password": "$2a$10$wWHeH.woh7.U.6x3KYCka.489idze2Mcl3o7tP9W1l0ygxGTgUvUi",
     "group": "admin",
+    "email": ""
+  },
+  {
+    "username": "test",
+    "password": "$2a$10$m6b6fBViGpI43Ltj9NCp..k0hrTjyJxH7kFQNKwWbr/xJuIGUUtMq",
+    "group": "requester",
     "email": ""
   }
 ]

@@ -357,10 +357,47 @@ const EditModal: React.FC<EditModalProps> = ({
       case translatedFields.path: {
         const uploadEndpoint = "/upload";
 
+        // Funktion zum Anzeigen der PDF im neuen Tab
+        const onView = async (path: string) => {
+          try {
+            const authToken = localStorage.getItem("token");
+            const fileName = formData[index];
+            if (!authToken) {
+              setError("No authentication token found");
+              return;
+            }
+            const response = await axios.get(
+              `${API_BASE_URL}/${path}/${fileName}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${authToken}`,
+                },
+                responseType: "blob",
+              }
+            );
+            const file = new Blob([response.data], { type: "application/pdf" });
+            const fileURL = URL.createObjectURL(file);
+            window.open(fileURL, "_blank");
+          } catch (err: any) {
+            setError(
+              "Error viewing file: " +
+                (err.response?.data?.message || err.message)
+            );
+          }
+        };
+
         return (
           <div className="file-upload-field">
-            {formData[10] === t("form.yes") ? (
+            {formData[10] == "form.yes" ? (
               <div className="mt-2 text-sm text-gray-600">
+                {formData[index] && (
+                  <button
+                    onClick={() => onView("download-signed")}
+                    className="mb-2 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+                  >
+                    {t("buttons.view")}
+                  </button>
+                )}
                 <p>
                   {t("file.uploaded")}: {formData[index] || t("file.none")}
                 </p>
@@ -369,17 +406,23 @@ const EditModal: React.FC<EditModalProps> = ({
               <>
                 <input
                   type="file"
-                  id={`file-upload-${index}`} // Unique ID for input
+                  id={`file-upload-${index}`}
                   onChange={(event) => handleFileUpload(event, uploadEndpoint)}
                   className="hidden"
                 />
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-4 mt-2">
                   <label
-                    htmlFor={`file-upload-${index}`} // Reference input via htmlFor
+                    htmlFor={`file-upload-${index}`}
                     className="px-4 py-2 bg-blue-500 text-white rounded cursor-pointer hover:bg-blue-600"
                   >
                     {isUploading ? t("file.uploading") : t("buttons.upload")}
                   </label>
+                  <button
+                    onClick={() => onView("download")}
+                    className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+                  >
+                    {t("buttons.view")}
+                  </button>
                 </div>
                 {formData[index] && (
                   <p className="mt-2 text-sm text-gray-600">

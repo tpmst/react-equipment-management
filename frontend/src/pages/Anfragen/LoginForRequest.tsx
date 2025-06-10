@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useAuth } from "../context/AuthenticationContext"; // Import the useAuth hook to access authentication functions
+import { useAuth } from "../../context/AuthenticationContext"; // Import the useAuth hook to access authentication functions
 import { useNavigate } from "react-router-dom"; // Import useNavigate to programmatically navigate between routes
-import { API_BASE_URL } from "./config"; // Import the base URL for API requests
+import { API_BASE_URL } from "../../security/config"; // Import the base URL for API requests
 
-const Login: React.FC = () => {
+const LoginForRequest: React.FC = () => {
   // State variables to hold the form inputs and potential error messages
   const [username, setUsername] = useState(""); // State to hold the username input
   const [password, setPassword] = useState(""); // State to hold the password input
@@ -22,7 +22,7 @@ const Login: React.FC = () => {
 
     try {
       // Send a POST request to the login endpoint with the username and password
-      const response = await axios.post(`${API_BASE_URL}/login`, {
+      const response = await axios.post(`${API_BASE_URL}/loginRequest`, {
         username,
         password,
       });
@@ -33,7 +33,7 @@ const Login: React.FC = () => {
       login(accessToken, refreshToken);
 
       // Navigate to the home page after successful login
-      navigate("/home");
+      navigate("/request");
     } catch (error) {
       // If the login fails, set an error message to be displayed
       setError("Invalid username or password");
@@ -73,7 +73,7 @@ const Login: React.FC = () => {
   };
 
   const handleNavigateToAdmin = () => {
-    navigate("/login"); // Navigate to the Login page
+    navigate("/login-admin"); // Navigate to the Admin Login page
   };
 
   return (
@@ -81,15 +81,15 @@ const Login: React.FC = () => {
       {/* Login Form Title */}
       <div className="grid grid-cols-2 gap-4 mb-4 p-4 items-center bg-white">
         <button
-          className="flex items-center justify-center text-2xl font-bold border rounded shadow h-16 w-full hover:bg-gray-200 transition-colors duration-300"
+          className="flex items-center justify-center text-2xl font-bold border rounded shadow h-16 w-full bg-blue-200"
+          disabled
           onClick={handleNavigateToAdmin}
           type="button"
         >
           Login
         </button>
         <button
-          className="flex items-center justify-center text-2xl font-bold border rounded shadow h-16 w-full bg-blue-200"
-          disabled
+          className="flex items-center justify-center text-2xl font-bold border rounded shadow h-16 w-full hover:bg-gray-200 transition-colors duration-300"
           onClick={handleNavigateToAdmin}
           type="button"
         >
@@ -142,7 +142,7 @@ const Login: React.FC = () => {
         {showForgotPassword && (
           <button
             onClick={() => setShowForgotPassword(true)} // Show the forgot password input when clicked
-            className="w-full bg-gray-500 text-white p-2 rounded"
+            className="w-full bg-gray-500 text-white p-2 rounded "
           >
             Reset Password
           </button>
@@ -199,4 +199,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default LoginForRequest;

@@ -6,7 +6,7 @@ import { API_BASE_URL } from "./config"; // Import the base URL for API requests
 const ChangePassword: React.FC = () => {
   // State variables to hold the form inputs and potential error messages
   const [username, setUsername] = useState(""); // State to hold the username input
-  const [currentPassword, setCurrentPassword] = useState(""); // State to hold the current password input
+  const [password, setCurrentPassword] = useState(""); // State to hold the current password input
   const [newPassword, setNewPassword] = useState(""); // State to hold the new password input
   const [error, setError] = useState(""); // State to hold any error messages
   const [success, setSuccess] = useState(""); // State to hold success messages
@@ -19,17 +19,17 @@ const ChangePassword: React.FC = () => {
     try {
       const response2 = await axios.post(`${API_BASE_URL}/login`, {
         username,
-        password: currentPassword, // Verwende `password` statt `currentPassword`
+        password, // Verwende `password` statt `password`
       });
 
-      const { token } = response2.data; // Extract the token from the response
+      const { accessToken } = response2.data; // Extract the token from the response
+      const token = accessToken;
       console.log(token);
       // Send a PUT request to the change-password endpoint
-      const response = await axios.put(
+      const response = await axios.post(
         `${API_BASE_URL}/users/change-password`,
         {
-          username,
-          currentPassword,
+          token, // Include the access token in the request body
           newPassword,
         },
         {
@@ -98,7 +98,7 @@ const ChangePassword: React.FC = () => {
           <label className="block mb-2">Current Password</label>
           <input
             type="password"
-            value={currentPassword}
+            value={password}
             onChange={(e) => setCurrentPassword(e.target.value)} // Update the current password state on input change
             className="w-full p-2 border border-gray-300 rounded"
             required // Ensure this field is required
@@ -120,7 +120,7 @@ const ChangePassword: React.FC = () => {
         {/* Submit Button for Changing Password */}
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded"
+          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors duration-300"
         >
           Change Password
         </button>
@@ -130,7 +130,7 @@ const ChangePassword: React.FC = () => {
       <div className="mt-6">
         <button
           onClick={() => navigate("/login")} // Navigate back to the login page
-          className="w-full bg-gray-500 text-white p-2 rounded"
+          className="w-full bg-gray-500 text-white p-2 rounded hover:bg-gray-600 transition-colors duration-300"
         >
           Go Back to Login
         </button>

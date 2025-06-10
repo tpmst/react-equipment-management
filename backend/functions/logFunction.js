@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const jwt = require("jsonwebtoken"); // For extracting user info from JWT
+const {getUsername} = require("./getUsername")
 
 /**
  * Cleans input to prevent newlines and ensure safe logging.
@@ -14,41 +14,6 @@ function sanitize(input) {
 
 
 /**
- * Extracts the username from the request (supports JWT & sessions).
- * @param {Object} req - Express request object
- * @returns {string} - Extracted username or "unknown" if not found
- */
-function getUsername(req) {
-    try {
-        // 1️⃣ Check JWT Token (Bearer Authorization)
-        const token = req.headers.authorization?.split(" ")[1];
-        if (token) {
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            return sanitize(decoded.username || "unknown"); // Adjust field if needed
-        }
-
-        // 2️⃣ Check Express Session (if used)
-        if (req.session?.user?.username) {
-            return sanitize(req.session.user.username);
-        }
-
-        // 3️⃣ Check Basic Authentication (rare case)
-        const authHeader = req.headers.authorization || "";
-        if (authHeader.startsWith("Basic ")) {
-            const base64Credentials = authHeader.split(" ")[1];
-            const credentials = Buffer.from(base64Credentials, "base64").toString("utf-8");
-            const [username] = credentials.split(":");
-            return sanitize(username || "unknown");
-        }
-
-        return "unknown"; // Default if no username found
-    } catch (error) {
-        console.warn("⚠️ Failed to extract username:", error.message);
-        return "unknown";
-    }
-}
-
-/**
  * Logs actions to a CSV file.
  * @param {Object} req - Express request object (for extracting username)
  * @param {string} action - The type of action (e.g., "DELETE_FILE", "SEARCH_CSV").
@@ -57,6 +22,26 @@ function getUsername(req) {
 async function logAction(req, action, details) {
     const user = getUsername(req);
     const logFilePath = path.join(__dirname, "../files/logs/actionLogs.csv");
+
+    // Ensure the logs directory exists
+    if (!fs.existsSync(path.dirname(logFilePath))) {
+        fs.mkdirSync(path.dirname(logFilePath), { recursive: true });
+    }
+
+    // Prepare log entry
+    const timestamp = new Date().toISOString();
+    const logEntry = `${sanitize(timestamp)};${user};${sanitize(action)};[${sanitize(details)}]\n`;
+
+    try {
+        await fs.promises.appendFile(logFilePath, logEntry, "utf8");
+    } catch (error) {
+        console.error("❌ Error writing to log file:", error);
+    }
+}
+
+async function logAPIAction(req, action, details) {
+    const user = getUsername(req);
+    const logFilePath = path.join(__dirname, "../files/logs/api-actionLogs.csv");
 
     // Ensure the logs directory exists
     if (!fs.existsSync(path.dirname(logFilePath))) {
@@ -137,4 +122,4 @@ async function logLogin(user, group) {
 }
 
 // Export functions for use in other files
-module.exports = { logAction, logDetection, logError, logLogin };
+module.exports = { logAction, logDetection, logError, logLogin, logAPIAction };

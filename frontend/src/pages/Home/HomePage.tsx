@@ -16,6 +16,7 @@ import { useAuth } from "../../context/AuthenticationContext";
 import axios from "axios";
 import { API_BASE_URL, COMPANY_NAME } from "../../security/config";
 import LogoutIcon from "@mui/icons-material/Logout";
+import RequestView from "../AnfragenPage/RequestPage";
 
 const HomePage: React.FC = () => {
   const [site, setSite] = useState("dashboard");
@@ -105,6 +106,7 @@ const HomePage: React.FC = () => {
                   addToXLSX={(row) => xlsxRef.current?.addRow(row)}
                 />
               )}
+              {site === "requests" && <RequestView />}
               {site === "telefon" && <TelefonCSV />}
               {site === "settings" && <SettingsLayout />}
               {site === "it" && <CSV_ITS />}

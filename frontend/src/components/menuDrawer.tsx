@@ -17,6 +17,7 @@ import PrintIcon from "@mui/icons-material/Print";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import SimCardIcon from "@mui/icons-material/SimCard";
+import QuizIcon from "@mui/icons-material/Quiz";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import DrawerCard from "./drawer/drawerCard";
 import clsx from "clsx"; // for conditional class joining
@@ -186,6 +187,36 @@ export default function MenuDrawer({ setSite }: MenuDrawerProps) {
                       {isExpanded && (
                         <ListItemText
                           primary="IT-Bestellungen"
+                          sx={{
+                            color: textColor,
+                            height: 16,
+                            alignItems: "center",
+                            justifyItems: "center",
+                            paddingBottom: 3,
+                          }}
+                        />
+                      )}
+                    </ListItemButton>
+                  </ListItem>
+                </DrawerCard>
+                <div className="m-2"></div>
+                {/* More List Items */}
+                <DrawerCard>
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      onClick={() => handleMenuClick("requests")}
+                      sx={{ height: 40, padding: 1, paddingLeft: 2 }}
+                    >
+                      <QuizIcon>
+                        <TableChartIcon
+                          sx={{
+                            color: textColor,
+                          }}
+                        />
+                      </QuizIcon>
+                      {isExpanded && (
+                        <ListItemText
+                          primary="Excel-Sheet"
                           sx={{
                             color: textColor,
                             height: 16,

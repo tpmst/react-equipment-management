@@ -264,18 +264,47 @@ const EditModal: React.FC<EditModalProps> = ({
                 {isUploading ? "Uploading..." : t(`buttons.upload`)}
               </label>
               {formData[index] && (
-                <button
-                  onClick={() =>
-                    handleFileDownload(
-                      downloadEndpoint,
-                      formData[index],
-                      "buy-rent"
-                    )
-                  }
-                  className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                >
-                  {t("buttons.download")}
-                </button>
+                <>
+                  <button
+                    onClick={() =>
+                      handleFileDownload(
+                        downloadEndpoint,
+                        formData[index],
+                        "buy-rent"
+                      )
+                    }
+                    className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                  >
+                    {t("buttons.download")}
+                  </button>
+                  <button
+                    onClick={async () => {
+                      try {
+                        const token = localStorage.getItem("token");
+                        const response = await axios.get(
+                          `${API_BASE_URL}${downloadEndpoint}/${formData[index]}`,
+                          {
+                            params: { folder: "buy-rent" },
+                            responseType: "blob",
+                            headers: {
+                              Authorization: `Bearer ${token}`,
+                            },
+                          }
+                        );
+                        const file = new Blob([response.data], {
+                          type: "application/pdf",
+                        });
+                        const fileURL = URL.createObjectURL(file);
+                        window.open(fileURL, "_blank");
+                      } catch (err) {
+                        setError("File view failed.");
+                      }
+                    }}
+                    className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+                  >
+                    {t("buttons.view")}
+                  </button>
+                </>
               )}
             </div>
             {formData[index] && (
@@ -306,18 +335,47 @@ const EditModal: React.FC<EditModalProps> = ({
                 {isUploading ? "Uploading..." : t(`buttons.upload`)}
               </label>
               {formData[index] && (
-                <button
-                  onClick={() =>
-                    handleFileDownload(
-                      downloadEndpoint,
-                      formData[index],
-                      "maintanance"
-                    )
-                  }
-                  className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                >
-                  {t("buttons.download")}
-                </button>
+                <>
+                  <button
+                    onClick={() =>
+                      handleFileDownload(
+                        downloadEndpoint,
+                        formData[index],
+                        "maintanance"
+                      )
+                    }
+                    className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                  >
+                    {t("buttons.download")}
+                  </button>
+                  <button
+                    onClick={async () => {
+                      try {
+                        const token = localStorage.getItem("token");
+                        const response = await axios.get(
+                          `${API_BASE_URL}${downloadEndpoint}/${formData[index]}`,
+                          {
+                            params: { folder: "maintanance" },
+                            responseType: "blob",
+                            headers: {
+                              Authorization: `Bearer ${token}`,
+                            },
+                          }
+                        );
+                        const file = new Blob([response.data], {
+                          type: "application/pdf",
+                        });
+                        const fileURL = URL.createObjectURL(file);
+                        window.open(fileURL, "_blank");
+                      } catch (err) {
+                        setError("File view failed.");
+                      }
+                    }}
+                    className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+                  >
+                    {t("buttons.view")}
+                  </button>
+                </>
               )}
             </div>
             {formData[index] && (

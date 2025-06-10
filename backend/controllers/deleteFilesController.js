@@ -121,6 +121,8 @@ async function deleteFiles(req, res) {
         const csvDirectory = path.join(__dirname, "../files/csv");
         const csvFiles = await fs.promises.readdir(csvDirectory);
 
+        let lastUpdatedRows = null; // <--- hinzufügen
+
         for (const csvFile of csvFiles) {
             const csvFilePath = path.join(csvDirectory, csvFile);
             let data = await fs.promises.readFile(csvFilePath, "utf8");
@@ -141,10 +143,11 @@ async function deleteFiles(req, res) {
             // If a change was made, write the updated CSV file
             if (updated) {
                 await fs.promises.writeFile(csvFilePath, updatedRows.join("\n"), "utf8");
+                lastUpdatedRows = updatedRows; // <--- merken
             }
         }
 
-        logAction(req, "deleteFiles", filePath + " | " + updatedRows)
+        logAction(req, "deleteFiles", filePath + " | " + (lastUpdatedRows ? lastUpdatedRows.join("\n") : "no csv updated"));
 
         res.json({ message: "File deleted successfully and CSV references cleared" });
     } catch (error) {

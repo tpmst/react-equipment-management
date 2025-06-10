@@ -8,14 +8,8 @@
     "einkauf",
     "telefon",
     "settings",
-    "it"
+    "it",
+    "requests"
   ],
-  "einkauf": [
-    "dashboard",
-    "einkauf"
-  ],
-  "buha": [
-    "dashboard",
-    "einkauf"
-  ]
+  "requester": []
 }

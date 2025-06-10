@@ -68,9 +68,29 @@ function updateSettings(req, res) {
     }
 }
 
+
+function getSettingsUser(req, res) {
+    const filePath = path.join(__dirname, '../files/config', 'config.json');
+
+    if (!fs.existsSync(filePath)) {
+        return res.status(404).json({ message: 'Config data file not found' });
+    }
+
+    try {
+        const data = fs.readFileSync(filePath, 'utf8');
+        const json = JSON.parse(data);
+        // Nur die Kategorien zurückgeben
+        res.json({ categories: json.categories || [] });
+    } catch (error) {
+        logError(req, "getSettingsUser", error)
+        res.status(500).json({ message: 'Error reading config file' });
+    }
+}
+
 // Export Functions for Express Routes
 
 module.exports = {
     getSettings,
-    updateSettings
+    updateSettings,
+    getSettingsUser
 };

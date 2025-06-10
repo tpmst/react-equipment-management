@@ -12,6 +12,9 @@ const JWT_EXPIRATION = process.env.JWT_EXPIRATION || "1h"; // Default expiration
 const REFRESH_TOKEN_EXPIRATION = process.env.REFRESH_TOKEN_EXPIRATION || "7d"; // Refresh token expiration
 const BACKEND_URL = process.env.BACKEND_URL;
 
+// Path to user database (JSON file)
+const USERS_FILE = path.join(__dirname, "./logins/logindata.json");
+
 // In-memory store for refresh tokens (use a database in production)
 const refreshTokens = new Map();
 
@@ -46,6 +49,16 @@ function getUsers() {
     return JSON.parse(data); // Parse and return the data
 }
 
+// Helper function to write users to JSON file
+const saveUsers = (users) => {
+  try {
+    fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2), "utf8");
+  } catch (error) {
+    console.error("Error writing to users file:", error);
+  }
+};
+
+
 // Function to generate tokens
 const generateTokens = (user) => {
   const accessToken = jwt.sign(
@@ -68,6 +81,38 @@ const generateTokens = (user) => {
 
 // Login function with token generation
 async function login(req, res) {
+  try {
+    const { username, password } = req.body;
+
+    const users = getUsers(); // Fetch users from JSON file
+    const user = users.find((u) => u.username === username);
+
+    if (!user) {
+      return res.status(401).json({ message: "Invalid username or password" });
+    }
+
+    if(user.group === "requester"){
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    // Compare the provided password with the hashed password
+    const isPasswordValid = bcrypt.compareSync(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Invalid username or password" });
+    }
+
+    // Generate access and refresh tokens
+    const { accessToken, refreshToken } = generateTokens(user);
+
+    logLogin(user.username, user.group);
+    res.json({ accessToken, refreshToken, group: user.group, username: user.username });
+  } catch (error) {
+    console.error("Login Error:", error);
+    res.status(500).json({ message: "An error occurred during login", error: error.message });
+  }
+}
+
+async function loginRequest(req, res) {
   try {
     const { username, password } = req.body;
 
@@ -212,6 +257,7 @@ async function forgotPassword(req, res) {
 async function resetPassword(req, res) {
   const { token, newPassword } = req.body;
 
+
   if (!token || !newPassword) {
     return res.status(400).json({ message: "Token and new password are required" });
   }
@@ -240,5 +286,13 @@ async function resetPassword(req, res) {
   }
 }
 
-module.exports = { authenticateToken, login, forgotPassword, resetPassword, renewToken, logout };
+module.exports = {
+  authenticateToken,
+  login,
+  loginRequest,
+  forgotPassword,
+  resetPassword,
+  renewToken,
+  logout,
+};
 

@@ -138,6 +138,27 @@ const InputFieldRenderer: React.FC<Props> = ({
     }
   };
 
+  const handleFileView = async (downloadEndpoint: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(
+        `${API_BASE_URL}${downloadEndpoint}/${formData[index]}`,
+        {
+          responseType: "blob",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const file = new Blob([response.data], { type: "application/pdf" });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL, "_blank");
+    } catch (err) {
+      setError("File view failed.");
+    }
+  };
+
   const translatedCases = {
     status: t("csvheader.status"),
     id: t("csvheader.id"),
@@ -312,12 +333,20 @@ const InputFieldRenderer: React.FC<Props> = ({
               {isUploading ? "Uploading..." : t(`buttons.upload`)}
             </label>
             {formData[index] && (
-              <button
-                onClick={() => handleFileDownload(downloadEndpoint)}
-                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-              >
-                Download File
-              </button>
+              <>
+                <button
+                  onClick={() => handleFileDownload(downloadEndpoint)}
+                  className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                >
+                  Download File
+                </button>
+                <button
+                  onClick={() => handleFileView(downloadEndpoint)}
+                  className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+                >
+                  View PDF
+                </button>
+              </>
             )}
           </div>
           {formData[index] && (

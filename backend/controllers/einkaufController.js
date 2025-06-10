@@ -127,7 +127,7 @@ function downloadFileInvest(req, res) {
 const storageContract = multer.diskStorage({
     destination: (req, file, cb) => {
         // Define the upload path
-        const uploadPath = path.join(__dirname, '../files/contracts', req.query.folder);
+        const uploadPath = path.join(__dirname, '../files', req.query.folder);
 
         // Check if the directory exists, if not, create it
         if (!fs.existsSync(uploadPath)) {
@@ -151,7 +151,7 @@ const uploadContract = multer({ storage: storageContract });
  */
 function uploadFileContract(req, res) {
     // Construct the full file path where the uploaded file is stored
-    const filePath = path.join(__dirname, '../files/contracts/', req.query.folder, req.file.filename);
+    const filePath = path.join(__dirname, '../files', req.query.folder, req.file.filename);
     logAction(req, "uploadContracts", filePath)
     // Respond with a success message and file path
     res.json({ message: 'File uploaded successfully', filePath });
@@ -163,18 +163,30 @@ function uploadFileContract(req, res) {
  * @param {Object} res - Express response object for sending the file.
  */
 function downloadContract(req, res) {
-    // Construct the full file path for the requested file
-    const filePath = path.join(__dirname, '../files/contracts/',req.query.folder , req.params.filename);
+    try {
+        const folder = decodeURIComponent(req.query.folder);
+        const filename = decodeURIComponent(req.params.filename);
+        const filePath = path.join(__dirname, '../files', folder, filename);
 
-    // Check if the file exists before attempting to send it
-    if (fs.existsSync(filePath)) {
-        logAction(req, "downloadContracts", filePath)
-        res.download(filePath); // Send the file for download
-    } else {
-        logError(req, "downloadFileContracts", error)
-        res.status(404).json({ message: 'File not found' }); // Return 404 if file is missing
+        if (fs.existsSync(filePath)) {
+            logAction(req, "downloadContracts", filePath);
+            res.download(filePath, (err) => {
+                if (err) {
+                    logError(req, "downloadFileContracts", err.message || err);
+                    res.status(500).json({ message: 'Error sending file' });
+                }
+            });
+        } else {
+            logError(req, "downloadFileContracts", `File not found: ${filePath}`);
+            res.status(404).json({ message: 'File not found' });
+        }
+    } catch (error) {
+        logError(req, "downloadFileContracts", error.message || error);
+        res.status(500).json({ message: 'Internal server error' });
     }
 }
+
+
 
 // Export functions for use in Express routes
 module.exports = {

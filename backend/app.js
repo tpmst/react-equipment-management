@@ -19,7 +19,7 @@ const FRONTEND_URL_BACKUP = process.env.FRONTEND_URL_BACKUP;
 const ENABLE_GET_PRINTER_COUNTS = process.env.ENABLE_GET_PRINTER_COUNTS || false;
 
 // Import authentication middleware
-const { login, resetPassword, forgotPassword, renewToken } = require('./middleware/authMiddleware');
+const { login, resetPassword, forgotPassword, renewToken, loginRequest } = require('./middleware/authMiddleware');
 
 // Initialize Express app
 const app = express();
@@ -49,8 +49,11 @@ app.use(express.json());
  */
 app.post('/login', login);
 app.post('/users/forgot-password', forgotPassword);
-app.post('/users/reset-password', resetPassword);
+app.post('/users/change-password', resetPassword);
 app.post('/users/renew-token', renewToken);
+
+//request Hardware
+app.post('/loginRequest', loginRequest);
 
 // For groups
 const authRoutes = require("./middleware/routesMiddelware");
@@ -62,6 +65,13 @@ app.use(userRoutes);
 
 const groupRoutes = require("./middleware/editGroupsMiddelware");
 app.use(groupRoutes);
+
+//export CSV file route
+app.use("/api", require("./middleware/API/rest"));
+const { getApiToken, deleteApiToken } = require("./middleware/apiMiddleware");
+const { authenticateToken } = require("./middleware/authMiddleware");
+app.get("/get-api-token", authenticateToken, getApiToken);
+app.delete("/delete-api-token", authenticateToken, deleteApiToken);
 
 // Route Handling
 

@@ -19,8 +19,9 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
+  Snackbar,
 } from "@mui/material";
-import { Edit, Delete, Add } from "@mui/icons-material";
+import { Edit, Delete, Add, VpnKey } from "@mui/icons-material";
 
 const UserManagement: React.FC = () => {
   const { authToken } = useAuth();
@@ -39,6 +40,8 @@ const UserManagement: React.FC = () => {
   const [password, setPassword] = useState(""); // Optional for edit
   const [userGroup, setUserGroup] = useState("");
   const [email, setEmail] = useState("");
+  const [apiToken, setApiToken] = useState<string | null>(null);
+  const [showApiToken, setShowApiToken] = useState(false);
 
   // Fetch users and groups from backend
   useEffect(() => {
@@ -143,9 +146,70 @@ const UserManagement: React.FC = () => {
     }
   };
 
+  // Create API Token for REST API
+  const handleCreateApiToken = async () => {
+    if (!authToken) return;
+    try {
+      const response = await axios.get(`${API_BASE_URL}/get-api-token`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+      setApiToken(response.data.apiToken);
+      setShowApiToken(true);
+    } catch (error) {
+      setError("Error creating API token");
+    }
+  };
+
   return (
     <div className="p-6">
       {error && <p className="text-red-500">{error}</p>}
+
+      <div className="flex gap-4 items-stretch mb-4">
+        <Button
+          startIcon={<VpnKey />}
+          variant="outlined"
+          color="secondary"
+          className="w-full"
+          onClick={handleCreateApiToken}
+        >
+          {t("users.createApiToken")}
+        </Button>
+
+        <Button
+          startIcon={<VpnKey />}
+          variant="outlined"
+          color="error"
+          className="w-full"
+          onClick={async () => {
+            if (!authToken || !apiToken) return;
+            try {
+              await axios.delete(`${API_BASE_URL}/delete-api-token`, {
+                headers: { Authorization: `Bearer ${authToken}` },
+              });
+              setApiToken(null);
+              setShowApiToken(false);
+            } catch (error) {
+              setError("Error deleting API token");
+            }
+          }}
+        >
+          {t("users.deleteApiToken")}
+        </Button>
+      </div>
+
+      {apiToken && showApiToken && (
+        <Snackbar
+          open={showApiToken}
+          autoHideDuration={10000}
+          onClose={() => setShowApiToken(false)}
+          message={
+            <span style={{ wordBreak: "break-all" }}>
+              {t("users.apiToken")}: {apiToken}
+            </span>
+          }
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        />
+      )}
 
       {loading ? (
         <p>{t("loading")}...</p>

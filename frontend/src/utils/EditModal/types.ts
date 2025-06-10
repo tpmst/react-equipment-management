@@ -18,6 +18,13 @@ export interface EditModalProps {
     csvData: string[][];
   }
   
+export interface EditModalPropsRequests {
+    isOpen: boolean;
+    onClose: () => void;
+    data: string[];
+    onSave: (updatedData: string[]) => void;
+  }
+
   export interface EditModalPropsIT {
     isOpen: boolean;
     onClose: () => void;
